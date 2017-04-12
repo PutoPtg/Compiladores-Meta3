@@ -177,6 +177,7 @@
 	#include "y.tab.h"
 
 	#include "tree.h"
+	#include "symbols.h"
 	#define VAR (char*)calloc(1,sizeof(char))
 
 	int yylex(void);
@@ -190,6 +191,7 @@
 	int valorT=0;
 	int valorNull=0;
 	int valorL=0;
+	int valorS = 0;
 	int contaErros = 0;
 
 	node* root;
@@ -198,6 +200,8 @@
 	node* aux3;
 
 	char* auxType;
+
+	table* tab;
 
 
 /* Enabling traces.  */
@@ -220,13 +224,13 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 41 "jac.y"
+#line 45 "jac.y"
 {
     char* val;
     struct node* no;
 }
 /* Line 193 of yacc.c.  */
-#line 230 "y.tab.c"
+#line 234 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -239,7 +243,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 243 "y.tab.c"
+#line 247 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -568,16 +572,16 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   111,   111,   121,   133,   138,   143,   148,   155,   161,
-     171,   180,   190,   193,   202,   218,   235,   246,   256,   267,
-     283,   288,   295,   300,   305,   311,   324,   335,   344,   354,
-     366,   375,   391,   401,   413,   424,   441,   448,   455,   474,
-     484,   507,   543,   564,   585,   591,   599,   605,   610,   615,
-     620,   625,   631,   634,   636,   655,   669,   677,   686,   696,
-     699,   704,   716,   725,   740,   745,   752,   757,   762,   769,
-     776,   783,   790,   797,   804,   811,   818,   825,   832,   839,
-     846,   853,   859,   865,   871,   877,   885,   890,   896,   902,
-     908
+       0,   115,   115,   125,   137,   142,   147,   152,   159,   165,
+     175,   184,   194,   197,   206,   222,   239,   250,   260,   271,
+     287,   292,   299,   304,   309,   315,   328,   339,   348,   358,
+     370,   379,   395,   405,   417,   428,   445,   452,   459,   478,
+     488,   511,   547,   568,   589,   595,   603,   609,   614,   619,
+     624,   629,   635,   638,   640,   659,   673,   681,   690,   700,
+     703,   708,   720,   729,   744,   749,   756,   761,   766,   773,
+     780,   787,   794,   801,   808,   815,   822,   829,   836,   843,
+     850,   857,   863,   869,   875,   881,   889,   894,   900,   906,
+     912
 };
 #endif
 
@@ -1635,7 +1639,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 111 "jac.y"
+#line 115 "jac.y"
     {
 										if(contaErros == 0 && valorT == 1){
 											(yyval.no) = createNode(OTHER_node, "Program", "");
@@ -1649,7 +1653,7 @@ yyreduce:
     break;
 
   case 3:
-#line 121 "jac.y"
+#line 125 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "Program", "");
@@ -1663,7 +1667,7 @@ yyreduce:
     break;
 
   case 4:
-#line 133 "jac.y"
+#line 137 "jac.y"
     {
 													if(contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -1672,7 +1676,7 @@ yyreduce:
     break;
 
   case 5:
-#line 138 "jac.y"
+#line 142 "jac.y"
     {
 													if(contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -1681,7 +1685,7 @@ yyreduce:
     break;
 
   case 6:
-#line 143 "jac.y"
+#line 147 "jac.y"
     {
 													if(contaErros == 0 && valorT == 1){
 														(yyval.no) = NULL;
@@ -1690,7 +1694,7 @@ yyreduce:
     break;
 
   case 7:
-#line 148 "jac.y"
+#line 152 "jac.y"
     {
 													if(contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (2)].no);
@@ -1701,7 +1705,7 @@ yyreduce:
     break;
 
   case 8:
-#line 155 "jac.y"
+#line 159 "jac.y"
     {
 													if(contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (2)].no);
@@ -1711,7 +1715,7 @@ yyreduce:
     break;
 
   case 9:
-#line 161 "jac.y"
+#line 165 "jac.y"
     {
 													if(contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (2)].no);
@@ -1720,7 +1724,7 @@ yyreduce:
     break;
 
   case 10:
-#line 171 "jac.y"
+#line 175 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "FieldDecl", "");
@@ -1733,7 +1737,7 @@ yyreduce:
     break;
 
   case 11:
-#line 180 "jac.y"
+#line 184 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "FieldDecl", "");
@@ -1747,12 +1751,12 @@ yyreduce:
     break;
 
   case 12:
-#line 190 "jac.y"
+#line 194 "jac.y"
     {(yyval.no) = NULL; if (contaErros == 0 && valorT == 1) {clearTree(root);}}
     break;
 
   case 13:
-#line 193 "jac.y"
+#line 197 "jac.y"
     {
 											if(contaErros == 0 && valorT == 1){
 												(yyval.no) = createNode(OTHER_node, "FieldDecl", "");
@@ -1765,7 +1769,7 @@ yyreduce:
     break;
 
   case 14:
-#line 202 "jac.y"
+#line 206 "jac.y"
     {
 											if (contaErros == 0 && valorT == 1){
 												(yyval.no) = createNode(OTHER_node, "FieldDecl", "");
@@ -1779,7 +1783,7 @@ yyreduce:
     break;
 
   case 15:
-#line 218 "jac.y"
+#line 222 "jac.y"
     {
 															if(contaErros == 0 && valorT == 1){
 																(yyval.no) = createNode(OTHER_node, "MethodDecl", "");
@@ -1794,7 +1798,7 @@ yyreduce:
     break;
 
   case 16:
-#line 235 "jac.y"
+#line 239 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = (yyvsp[(1) - (5)].no);
@@ -1809,7 +1813,7 @@ yyreduce:
     break;
 
   case 17:
-#line 246 "jac.y"
+#line 250 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = (yyvsp[(1) - (4)].no);
@@ -1823,7 +1827,7 @@ yyreduce:
     break;
 
   case 18:
-#line 256 "jac.y"
+#line 260 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "Void", "");
@@ -1838,7 +1842,7 @@ yyreduce:
     break;
 
   case 19:
-#line 267 "jac.y"
+#line 271 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "Void", "");
@@ -1852,7 +1856,7 @@ yyreduce:
     break;
 
   case 20:
-#line 283 "jac.y"
+#line 287 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = NULL;
@@ -1861,7 +1865,7 @@ yyreduce:
     break;
 
   case 21:
-#line 288 "jac.y"
+#line 292 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = (yyvsp[(2) - (3)].no);
@@ -1870,7 +1874,7 @@ yyreduce:
     break;
 
   case 22:
-#line 295 "jac.y"
+#line 299 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -1879,7 +1883,7 @@ yyreduce:
     break;
 
   case 23:
-#line 300 "jac.y"
+#line 304 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -1888,7 +1892,7 @@ yyreduce:
     break;
 
   case 24:
-#line 305 "jac.y"
+#line 309 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = (yyvsp[(1) - (2)].no);
@@ -1898,7 +1902,7 @@ yyreduce:
     break;
 
   case 25:
-#line 311 "jac.y"
+#line 315 "jac.y"
     {
 														if(contaErros == 0 && valorT == 1){
 															(yyval.no) = (yyvsp[(1) - (2)].no);
@@ -1908,7 +1912,7 @@ yyreduce:
     break;
 
   case 26:
-#line 324 "jac.y"
+#line 328 "jac.y"
     {
 											if (contaErros == 0 && valorT == 1){
 												(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -1917,7 +1921,7 @@ yyreduce:
     break;
 
   case 27:
-#line 335 "jac.y"
+#line 339 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "ParamDecl", "");
@@ -1930,7 +1934,7 @@ yyreduce:
     break;
 
   case 28:
-#line 344 "jac.y"
+#line 348 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "ParamDecl", "");
@@ -1944,7 +1948,7 @@ yyreduce:
     break;
 
   case 29:
-#line 354 "jac.y"
+#line 358 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "ParamDecl", "");
@@ -1958,7 +1962,7 @@ yyreduce:
     break;
 
   case 30:
-#line 366 "jac.y"
+#line 370 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "ParamDecl", "");
@@ -1971,7 +1975,7 @@ yyreduce:
     break;
 
   case 31:
-#line 375 "jac.y"
+#line 379 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "ParamDecl", "");
@@ -1985,7 +1989,7 @@ yyreduce:
     break;
 
   case 32:
-#line 391 "jac.y"
+#line 395 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "VarDecl", "");
@@ -1998,7 +2002,7 @@ yyreduce:
     break;
 
   case 33:
-#line 401 "jac.y"
+#line 405 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "VarDecl", "");
@@ -2012,7 +2016,7 @@ yyreduce:
     break;
 
   case 34:
-#line 413 "jac.y"
+#line 417 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "VarDecl", "");
@@ -2026,7 +2030,7 @@ yyreduce:
     break;
 
   case 35:
-#line 424 "jac.y"
+#line 428 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "VarDecl", "");
@@ -2041,7 +2045,7 @@ yyreduce:
     break;
 
   case 36:
-#line 441 "jac.y"
+#line 445 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "Bool", "");
@@ -2052,7 +2056,7 @@ yyreduce:
     break;
 
   case 37:
-#line 448 "jac.y"
+#line 452 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "Int", "");
@@ -2063,7 +2067,7 @@ yyreduce:
     break;
 
   case 38:
-#line 455 "jac.y"
+#line 459 "jac.y"
     {
 														if (contaErros == 0 && valorT == 1){
 															(yyval.no) = createNode(OTHER_node, "Double", "");
@@ -2074,7 +2078,7 @@ yyreduce:
     break;
 
   case 39:
-#line 474 "jac.y"
+#line 478 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			if((yyvsp[(2) - (3)].no) != NULL && (yyvsp[(2) - (3)].no)->right != NULL){
@@ -2088,7 +2092,7 @@ yyreduce:
     break;
 
   case 40:
-#line 484 "jac.y"
+#line 488 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = createNode(OTHER_node, "If", "");
@@ -2115,7 +2119,7 @@ yyreduce:
     break;
 
   case 41:
-#line 507 "jac.y"
+#line 511 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = createNode(OTHER_node, "If", "");
@@ -2155,7 +2159,7 @@ yyreduce:
     break;
 
   case 42:
-#line 543 "jac.y"
+#line 547 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = createNode(OTHER_node, "While", "");
@@ -2180,7 +2184,7 @@ yyreduce:
     break;
 
   case 43:
-#line 564 "jac.y"
+#line 568 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = createNode(OTHER_node, "DoWhile", "");
@@ -2205,7 +2209,7 @@ yyreduce:
     break;
 
   case 44:
-#line 585 "jac.y"
+#line 589 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = createNode(OTHER_node, "Print", "");
@@ -2215,7 +2219,7 @@ yyreduce:
     break;
 
   case 45:
-#line 591 "jac.y"
+#line 595 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = createNode(OTHER_node, "Print", "");
@@ -2227,7 +2231,7 @@ yyreduce:
     break;
 
   case 46:
-#line 599 "jac.y"
+#line 603 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = NULL;
@@ -2237,7 +2241,7 @@ yyreduce:
     break;
 
   case 47:
-#line 605 "jac.y"
+#line 609 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = (yyvsp[(1) - (2)].no);
@@ -2246,7 +2250,7 @@ yyreduce:
     break;
 
   case 48:
-#line 610 "jac.y"
+#line 614 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = (yyvsp[(1) - (2)].no);
@@ -2255,7 +2259,7 @@ yyreduce:
     break;
 
   case 49:
-#line 615 "jac.y"
+#line 619 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = (yyvsp[(1) - (2)].no);
@@ -2264,7 +2268,7 @@ yyreduce:
     break;
 
   case 50:
-#line 620 "jac.y"
+#line 624 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = createNode(OTHER_node, "Return", "");
@@ -2273,7 +2277,7 @@ yyreduce:
     break;
 
   case 51:
-#line 625 "jac.y"
+#line 629 "jac.y"
     {
 																		if (contaErros == 0 && valorT == 1){
 																			(yyval.no) = createNode(OTHER_node, "Return", "");
@@ -2283,17 +2287,17 @@ yyreduce:
     break;
 
   case 52:
-#line 631 "jac.y"
+#line 635 "jac.y"
     {(yyval.no) = NULL; if (contaErros == 0 && valorT == 1) {clearTree(root);}}
     break;
 
   case 53:
-#line 634 "jac.y"
+#line 638 "jac.y"
     {(yyval.no) = NULL;}
     break;
 
   case 54:
-#line 636 "jac.y"
+#line 640 "jac.y"
     {
 												if (contaErros == 0 && valorT == 1){
 													if((yyvsp[(1) - (2)].no) != NULL){
@@ -2310,7 +2314,7 @@ yyreduce:
     break;
 
   case 55:
-#line 655 "jac.y"
+#line 659 "jac.y"
     {
 																if (contaErros == 0 && valorT == 1){
 																	(yyval.no) = createNode(OTHER_node, "Assign", "");
@@ -2323,7 +2327,7 @@ yyreduce:
     break;
 
   case 56:
-#line 669 "jac.y"
+#line 673 "jac.y"
     {
 																if (contaErros == 0 && valorT == 1){
 																	(yyval.no) = createNode(OTHER_node, "Call", "");
@@ -2335,7 +2339,7 @@ yyreduce:
     break;
 
   case 57:
-#line 677 "jac.y"
+#line 681 "jac.y"
     {
 																if (contaErros == 0 && valorT == 1){
 																	(yyval.no) = createNode(OTHER_node, "Call", "");
@@ -2348,7 +2352,7 @@ yyreduce:
     break;
 
   case 58:
-#line 686 "jac.y"
+#line 690 "jac.y"
     {
 																if (contaErros == 0 && valorT == 1){
 																	(yyval.no) = createNode(OTHER_node, "Call", "");
@@ -2362,12 +2366,12 @@ yyreduce:
     break;
 
   case 59:
-#line 696 "jac.y"
+#line 700 "jac.y"
     {(yyval.no) = NULL; if (contaErros == 0 && valorT == 1) {clearTree(root);}}
     break;
 
   case 60:
-#line 699 "jac.y"
+#line 703 "jac.y"
     {
 															if (contaErros == 0 && valorT == 1){
 																(yyval.no) = (yyvsp[(2) - (2)].no);
@@ -2376,7 +2380,7 @@ yyreduce:
     break;
 
   case 61:
-#line 704 "jac.y"
+#line 708 "jac.y"
     {
 															if (contaErros == 0 && valorT == 1){
 																(yyval.no) = (yyvsp[(1) - (3)].no);
@@ -2386,7 +2390,7 @@ yyreduce:
     break;
 
   case 62:
-#line 716 "jac.y"
+#line 720 "jac.y"
     {
 																	if (contaErros == 0 && valorT == 1){
 																		(yyval.no) = createNode(OTHER_node, "ParseArgs", "");
@@ -2399,12 +2403,12 @@ yyreduce:
     break;
 
   case 63:
-#line 725 "jac.y"
+#line 729 "jac.y"
     {(yyval.no) = NULL; if (contaErros == 0 && valorT == 1) {clearTree(root);}}
     break;
 
   case 64:
-#line 740 "jac.y"
+#line 744 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -2413,7 +2417,7 @@ yyreduce:
     break;
 
   case 65:
-#line 745 "jac.y"
+#line 749 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -2422,7 +2426,7 @@ yyreduce:
     break;
 
   case 66:
-#line 752 "jac.y"
+#line 756 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -2431,7 +2435,7 @@ yyreduce:
     break;
 
   case 67:
-#line 757 "jac.y"
+#line 761 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(1) - (1)].no);
@@ -2440,7 +2444,7 @@ yyreduce:
     break;
 
   case 68:
-#line 762 "jac.y"
+#line 766 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "And", "");
@@ -2451,7 +2455,7 @@ yyreduce:
     break;
 
   case 69:
-#line 769 "jac.y"
+#line 773 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Or", "");
@@ -2462,7 +2466,7 @@ yyreduce:
     break;
 
   case 70:
-#line 776 "jac.y"
+#line 780 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Eq", "");
@@ -2473,7 +2477,7 @@ yyreduce:
     break;
 
   case 71:
-#line 783 "jac.y"
+#line 787 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Geq", "");
@@ -2484,7 +2488,7 @@ yyreduce:
     break;
 
   case 72:
-#line 790 "jac.y"
+#line 794 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Gt", "");
@@ -2495,7 +2499,7 @@ yyreduce:
     break;
 
   case 73:
-#line 797 "jac.y"
+#line 801 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Leq", "");
@@ -2506,7 +2510,7 @@ yyreduce:
     break;
 
   case 74:
-#line 804 "jac.y"
+#line 808 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Lt", "");
@@ -2517,7 +2521,7 @@ yyreduce:
     break;
 
   case 75:
-#line 811 "jac.y"
+#line 815 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Neq", "");
@@ -2528,7 +2532,7 @@ yyreduce:
     break;
 
   case 76:
-#line 818 "jac.y"
+#line 822 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Add", "");
@@ -2539,7 +2543,7 @@ yyreduce:
     break;
 
   case 77:
-#line 825 "jac.y"
+#line 829 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Sub", "");
@@ -2550,7 +2554,7 @@ yyreduce:
     break;
 
   case 78:
-#line 832 "jac.y"
+#line 836 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Mul", "");
@@ -2561,7 +2565,7 @@ yyreduce:
     break;
 
   case 79:
-#line 839 "jac.y"
+#line 843 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Div", "");
@@ -2572,7 +2576,7 @@ yyreduce:
     break;
 
   case 80:
-#line 846 "jac.y"
+#line 850 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Mod", "");
@@ -2583,7 +2587,7 @@ yyreduce:
     break;
 
   case 81:
-#line 853 "jac.y"
+#line 857 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Plus","");
@@ -2593,7 +2597,7 @@ yyreduce:
     break;
 
   case 82:
-#line 859 "jac.y"
+#line 863 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Minus","");
@@ -2603,7 +2607,7 @@ yyreduce:
     break;
 
   case 83:
-#line 865 "jac.y"
+#line 869 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Not","");
@@ -2613,7 +2617,7 @@ yyreduce:
     break;
 
   case 84:
-#line 871 "jac.y"
+#line 875 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(ID_node, "Id",(yyvsp[(1) - (1)].val));
@@ -2623,7 +2627,7 @@ yyreduce:
     break;
 
   case 85:
-#line 877 "jac.y"
+#line 881 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(OTHER_node, "Length", "");
@@ -2635,7 +2639,7 @@ yyreduce:
     break;
 
   case 86:
-#line 885 "jac.y"
+#line 889 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = (yyvsp[(2) - (3)].no);
@@ -2644,7 +2648,7 @@ yyreduce:
     break;
 
   case 87:
-#line 890 "jac.y"
+#line 894 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(BOOLLIT_node, "BoolLit",(yyvsp[(1) - (1)].val));
@@ -2654,7 +2658,7 @@ yyreduce:
     break;
 
   case 88:
-#line 896 "jac.y"
+#line 900 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(DECLIT_node, "DecLit",(yyvsp[(1) - (1)].val));
@@ -2664,7 +2668,7 @@ yyreduce:
     break;
 
   case 89:
-#line 902 "jac.y"
+#line 906 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
 														(yyval.no) = createNode(REALLIT_node, "RealLit",(yyvsp[(1) - (1)].val));
@@ -2674,13 +2678,13 @@ yyreduce:
     break;
 
   case 90:
-#line 908 "jac.y"
+#line 912 "jac.y"
     {(yyval.no) = NULL; if (contaErros == 0 && valorT == 1) {clearTree(root);}}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2684 "y.tab.c"
+#line 2688 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2894,14 +2898,13 @@ yyreturn:
 }
 
 
-#line 911 "jac.y"
+#line 915 "jac.y"
 
 
 /* Função de erros */
 int yyerror(const char *s){
 	printf("Line %lld, col %lld: %s: %s\n", contaLinha, contaColuna-strlen(yytext), s, yytext);
 	contaErros++;
-	//clearTree(root);
     return 0;
 }
 
@@ -2925,10 +2928,22 @@ int main(int argc, char *argv[])
         	valorT = 1;
             yyparse();
         }
+        else if(strcmp(argv[1], "-s") == 0){
+        	valorT = 1;
+        	valorS = 1;
+        	yyparse();
+        }
     }
     else if(argv[1] == NULL){
             valorNull = 1;
             yyparse();
+    }
+
+    /* Imprime as tabelas */
+    if(valorS && contaErros==0){
+        tab = initTables(root);
+        printTables(tab);
+        printf("\n");
     }
 
     if(contaErros == 0 && valorT == 1){

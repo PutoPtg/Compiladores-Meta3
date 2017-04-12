@@ -15,6 +15,7 @@
 	#include "y.tab.h"
 
 	#include "tree.h"
+	#include "symbols.h"
 	#define VAR (char*)calloc(1,sizeof(char))
 
 	int yylex(void);
@@ -28,6 +29,7 @@
 	int valorT=0;
 	int valorNull=0;
 	int valorL=0;
+	int valorS = 0;
 	int contaErros = 0;
 
 	node* root;
@@ -36,6 +38,8 @@
 	node* aux3;
 
 	char* auxType;
+
+	table* tab;
 %}
 
 %union{
@@ -914,7 +918,6 @@ ExprAux: MethodInvocation						{
 int yyerror(const char *s){
 	printf("Line %lld, col %lld: %s: %s\n", contaLinha, contaColuna-strlen(yytext), s, yytext);
 	contaErros++;
-	//clearTree(root);
     return 0;
 }
 
@@ -938,10 +941,22 @@ int main(int argc, char *argv[])
         	valorT = 1;
             yyparse();
         }
+        else if(strcmp(argv[1], "-s") == 0){
+        	valorT = 1;
+        	valorS = 1;
+        	yyparse();
+        }
     }
     else if(argv[1] == NULL){
             valorNull = 1;
             yyparse();
+    }
+
+    /* Imprime as tabelas */
+    if(valorS && contaErros==0){
+        tab = initTables(root);
+        printTables(tab);
+        printf("\n");
     }
 
     if(contaErros == 0 && valorT == 1){

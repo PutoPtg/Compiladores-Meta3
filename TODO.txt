@@ -1,0 +1,3 @@
+TODO - 12/04/2017
+
+Peguei e comecei a fazer a global table, está quase terminado à exceção de adicionar o tipo em métodos que tenham mais do que um parâmetro - Xavi
