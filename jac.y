@@ -905,7 +905,7 @@ ExprAux: MethodInvocation						{
 													}
 													free ($1);
 												}
-		| OCURV error CCURV						{if (contaErros == 0 && valorT == 1) {clearTree(root);}}
+		| OCURV error CCURV						{$$ = NULL; if (contaErros == 0 && valorT == 1) {clearTree(root);}}
 		;
 
 %%
@@ -914,7 +914,7 @@ ExprAux: MethodInvocation						{
 int yyerror(const char *s){
 	printf("Line %lld, col %lld: %s: %s\n", contaLinha, contaColuna-strlen(yytext), s, yytext);
 	contaErros++;
-	clearTree(root);
+	//clearTree(root);
     return 0;
 }
 
@@ -933,6 +933,10 @@ int main(int argc, char *argv[])
         else if(strcmp(argv[1], "-t") == 0){
         	valorT = 1;
         	yyparse();
+        }
+        else if(strcmp(argv[1], "-2") == 0){
+        	valorT = 1;
+            yyparse();
         }
     }
     else if(argv[1] == NULL){
