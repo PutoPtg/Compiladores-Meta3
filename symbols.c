@@ -74,7 +74,7 @@ void printTables(table* tab)
             printf("===== Class %s Symbol Table =====\n", tab->name);
             break;
         case methodTable:
-            printf("===== Function %s Symbol Table =====\n",tab->name); //nome da função
+            printf("===== Method %s Symbol Table =====\n",tab->name); //nome da função
             break;
         }
         for(i=0; i<tab->numSymbols; i++)
@@ -99,10 +99,10 @@ void printSymbol(symbol* sym)
     printf("%s\t", sym->name);
 
     if(strcmp(sym->paramTypes,"") != 0){
-      printf("%s\t", sym->paramTypes);
+      printf("%s", sym->paramTypes);
     }
 
-    printf("%s", sym->type);
+    printf("\t%s", sym->type);
     switch(sym->param)
     {
     case paramParam:
@@ -154,7 +154,7 @@ table* initTables(node* root){
 		return NULL;
 	}
 
-  int i, j;
+  int i, j, k;
 	/*int i,j,k,l;
   int contaArg = 1;*/
   /* Aqui vai buscar o nome à posição 0 dos filhos */
@@ -164,37 +164,87 @@ table* initTables(node* root){
 
   // Nós auxiliares para apontarem para os elementos da árvore
   node *aux;
-  node *aux2, *aux3, *aux4;
+  node *aux2, *aux3, *aux4, *aux5, *aux6;
 
   for(i=0 ; i<root->numChildren ; i++){
-    char value[256];
+    
     aux = root->children[i];
     if(strcmp(aux->nodeTypeName, "FieldDecl") == 0){
       aux2 = aux->children[1];  //guarda o ID do nome
       AddSymbol(global, createSymbol(aux2->var, "", toLower(aux->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
     }
+
     if(strcmp(aux->nodeTypeName, "MethodDecl") == 0){
+    	table* method;
+      	char value[256];
+      	int contaChildren = 0;
+      	aux2 = aux->children[0]->children[1]; //guarda o ID do nome
 
-      aux2 = aux->children[0]->children[1]; //guarda o ID do nome
-
-      aux3 = aux->children[0]->children[2]; //MethodParams para ver os paraâmetros      
-      for(j=0 ; j<aux3->numChildren ; j++){
-        aux4 = aux3->children[j];
+      	aux3 = aux->children[0]->children[2]; //MethodParams para ver os paraâmetros  
+      	aux5 = aux->children[1];	//Guarda valor para utilizar nos varDecl
+      	sprintf(value, "%s", "(");
+      	for(j=0 ; j<aux3->numChildren ; j++){
+        	aux4 = aux3->children[j];  
         
-        sprintf(value, "%s", "(");
-        if(strcmp(aux4->children[0]->nodeTypeName,"StringArray") == 0){
-          strcat(value, "String[]");
-        }
-        else{
-          strcat(value, toLower(aux4->children[0]->nodeTypeName));
-        }
-        strcat(value, ")");
-      }
-      AddSymbol(global, createSymbol(aux2->var, value, toLower(aux->children[0]->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
+        	if(aux3->numChildren <= 1){
+	        	if(strcmp(aux4->children[0]->nodeTypeName,"StringArray") == 0){
+	          		strcat(value, "String[]");
+	        	}
+	        	else{
+	          		strcat(value, toLower(aux4->children[0]->nodeTypeName));
+	        	}        
+        	}
+        	else{
+        		contaChildren++;
+        		if(strcmp(aux4->children[0]->nodeTypeName,"StringArray") == 0){
+	          		strcat(value, "String[]");
+	        	}
+	        	else{       	
+	          		strcat(value, toLower(aux4->children[0]->nodeTypeName));
+	        	}
+	        	
+	        	if(contaChildren != aux3->numChildren){
+	        		strcat(value, ",");
+	        	}
+	        
+        	}        
+      	}
 
-    }
+      	strcat(value, ")"); 
+      	AddSymbol(global, createSymbol(aux2->var, value, toLower(aux->children[0]->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
+      	
+      	// Iniciar as tabelas de métodos
+      	char methodName[256];
+      	sprintf(methodName, "%s", aux2->var);
+      	strcat(methodName, value);
+      	
+      	method = createTable(methodTable,methodName);
+      	AddSymbol(method,createSymbol("return", "", toLower(aux->children[0]->children[0]->nodeTypeName), nullParam,-1,-1,0,0));
+      	current->next = method;
+  	  	method->prev = current;
+  	  	current = current->next;
+
+  	  	// Se o método for o MAIN colocar os args
+  	  	if(strcmp(methodName, "main(String[])") == 0){
+  	  		AddSymbol(method,createSymbol("args", "", "String[]", paramParam,-1,-1,0,0));
+  	  	}
+  	  	else{
+  	  		for(j=0 ; j<aux3->numChildren ; j++){
+  	  			aux4 = aux3->children[j];
+  	  			AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
+  	  		}
+  	  	}
+
+  	  	// Ciclo que percorre os filhos de methodBody e vê as VarDecl
+    	for(k=0 ; k<aux5->numChildren ; k++){
+    		aux6 = aux5->children[k];
+
+    		if(strcmp(aux6->nodeTypeName, "VarDecl") == 0){
+    			AddSymbol(method,createSymbol(aux6->children[1]->var, "", toLower(aux6->children[0]->nodeTypeName), nullParam,-1,-1,0,0));
+    		} 
+    	}
+	}
   }
-
 	
 	return global;
 }
