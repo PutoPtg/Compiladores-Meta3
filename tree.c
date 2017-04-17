@@ -4,7 +4,7 @@
 *Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática
 *Manuel Madeira Amado - 2006131282
 *Xavier Silva - 2013153577
-*Versão 0.05
+*Versão 0.06
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -44,6 +44,7 @@ node* createNode(node_type nodeType, char* nodeTypeName, char* var)
     result->parent = NULL;
     result->left = NULL;
     result->right = NULL;
+    result->anot = (char*)malloc(256*sizeof(char));
     if (DEBUG == 1){printf("*********%s : %s\n", result->nodeTypeName, result->var);}
     return result;
 }
@@ -103,7 +104,7 @@ void addBrother(node* left, node* right)
 * RECEBE: TODO																		*
 * DEVOLVE: nada																		*
 ************************************************************************************/
-void printTree(node* current, int level)
+void printTree(node* current, int level, int valorS)
 {
     if(current==NULL)
     {
@@ -112,12 +113,12 @@ void printTree(node* current, int level)
     int i;
 
 
-
-
     for(i=0; i<level; i++)
         {
             printf("..");
         }
+
+
         if(current->nodeType == ID_node)
         {
             printf("Id(%s)\n",current->var);
@@ -144,8 +145,9 @@ void printTree(node* current, int level)
         }
         for(i=0; i<current->numChildren; i++)
         {
-            printTree(current->children[i], level+1);
+            printTree(current->children[i], level+1, valorS);
         }
+    	
 }
 
 

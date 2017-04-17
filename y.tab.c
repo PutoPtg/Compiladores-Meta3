@@ -2447,7 +2447,7 @@ yyreduce:
 #line 766 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "And", "");
+														(yyval.no) = createNode(EXP_node, "And", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2458,7 +2458,7 @@ yyreduce:
 #line 773 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Or", "");
+														(yyval.no) = createNode(EXP_node, "Or", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2469,7 +2469,7 @@ yyreduce:
 #line 780 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Eq", "");
+														(yyval.no) = createNode(EXP_node, "Eq", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2480,7 +2480,7 @@ yyreduce:
 #line 787 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Geq", "");
+														(yyval.no) = createNode(EXP_node, "Geq", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2491,7 +2491,7 @@ yyreduce:
 #line 794 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Gt", "");
+														(yyval.no) = createNode(EXP_node, "Gt", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2502,7 +2502,7 @@ yyreduce:
 #line 801 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Leq", "");
+														(yyval.no) = createNode(EXP_node, "Leq", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2513,7 +2513,7 @@ yyreduce:
 #line 808 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Lt", "");
+														(yyval.no) = createNode(EXP_node, "Lt", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2524,7 +2524,7 @@ yyreduce:
 #line 815 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Neq", "");
+														(yyval.no) = createNode(EXP_node, "Neq", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2535,7 +2535,7 @@ yyreduce:
 #line 822 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Add", "");
+														(yyval.no) = createNode(EXP_node, "Add", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2546,7 +2546,7 @@ yyreduce:
 #line 829 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Sub", "");
+														(yyval.no) = createNode(EXP_node, "Sub", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2557,7 +2557,7 @@ yyreduce:
 #line 836 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Mul", "");
+														(yyval.no) = createNode(EXP_node, "Mul", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2568,7 +2568,7 @@ yyreduce:
 #line 843 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Div", "");
+														(yyval.no) = createNode(EXP_node, "Div", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2579,7 +2579,7 @@ yyreduce:
 #line 850 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Mod", "");
+														(yyval.no) = createNode(EXP_node, "Mod", "");
 														addChild((yyval.no),(yyvsp[(1) - (3)].no));
 														addChild((yyval.no),(yyvsp[(3) - (3)].no));
 													}
@@ -2590,7 +2590,7 @@ yyreduce:
 #line 857 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Plus","");
+														(yyval.no) = createNode(EXP_node, "Plus","");
 														addChild((yyval.no), (yyvsp[(2) - (2)].no));
 													}
 												}
@@ -2600,7 +2600,7 @@ yyreduce:
 #line 863 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Minus","");
+														(yyval.no) = createNode(EXP_node, "Minus","");
 														addChild((yyval.no), (yyvsp[(2) - (2)].no));
 													}
 												}
@@ -2610,7 +2610,7 @@ yyreduce:
 #line 869 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Not","");
+														(yyval.no) = createNode(EXP_node, "Not","");
 														addChild((yyval.no), (yyvsp[(2) - (2)].no));
 													}
 												}
@@ -2630,7 +2630,7 @@ yyreduce:
 #line 881 "jac.y"
     {
 													if (contaErros == 0 && valorT == 1){
-														(yyval.no) = createNode(OTHER_node, "Length", "");
+														(yyval.no) = createNode(EXP_node, "Length", "");
 														aux = createNode(ID_node, "Id",(yyvsp[(1) - (2)].val));
 														addChild((yyval.no),aux);
 													}
@@ -2942,13 +2942,15 @@ int main(int argc, char *argv[])
     /* Imprime as tabelas */
     if(valorS && contaErros==0){
         tab = initTables(root);
+        //TreeAnt(root,0,tab,tab);
         printTables(tab);
         printf("\n");
     }
 
     if(contaErros == 0 && valorT == 1){
-    	printTree(root, 0);
+    	printTree(root, 0, valorS);
     }
+    clearTables(tab);
     clearTree(root);
     free(auxType);
 

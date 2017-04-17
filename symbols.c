@@ -4,7 +4,7 @@
 * Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática           *
 * Manuel Madeira Amado - 2006131282                                                 *
 * Xavier Silva - 2013153577                                                         *
-* Versão 0.2                                                                        *
+* Versão 0.3                                                                        *
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -159,7 +159,7 @@ table* initTables(node* root){
   int contaArg = 1;*/
   /* Aqui vai buscar o nome à posição 0 dos filhos */
 	table* global = createTable(classTable,root->children[0]->var);
-	table* current,*auxTable;
+	table* current;
 	current = global;
 
   // Nós auxiliares para apontarem para os elementos da árvore
@@ -341,6 +341,20 @@ int lengthEscape(char* string){
 
 void TreeAnt(node* current, int level, table* tabela, table* atual)
 {
+	int i;
+	if(current == NULL){
+		return;
+	}
+
+	for(i=0; i<current->numChildren; i++)
+      {
+          TreeAnt(current->children[i], level+1,tabela,atual);
+      }
+	if(current->nodeType == EXP_node){
+		if(strcmp(current->nodeTypeName, "StrLit") == 0){
+			strcpy(current->anot,"String");
+		}
+	}
     /*int i,j;
     int isGlobal  = 0;
     if(current==NULL)

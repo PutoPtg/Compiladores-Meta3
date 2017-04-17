@@ -765,110 +765,110 @@ ExprAux: MethodInvocation						{
 												}
 		| ExprAux AND ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "And", "");
+														$$ = createNode(EXP_node, "And", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux OR ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Or", "");
+														$$ = createNode(EXP_node, "Or", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux EQ ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Eq", "");
+														$$ = createNode(EXP_node, "Eq", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux GEQ ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Geq", "");
+														$$ = createNode(EXP_node, "Geq", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux GT ExprAux					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Gt", "");
+														$$ = createNode(EXP_node, "Gt", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux LEQ ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Leq", "");
+														$$ = createNode(EXP_node, "Leq", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux LT ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Lt", "");
+														$$ = createNode(EXP_node, "Lt", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux NEQ ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Neq", "");
+														$$ = createNode(EXP_node, "Neq", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux PLUS ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Add", "");
+														$$ = createNode(EXP_node, "Add", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux MINUS ExprAux 				{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Sub", "");
+														$$ = createNode(EXP_node, "Sub", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux STAR ExprAux 					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Mul", "");
+														$$ = createNode(EXP_node, "Mul", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux DIV ExprAux					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Div", "");
+														$$ = createNode(EXP_node, "Div", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| ExprAux MOD ExprAux					{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Mod", "");
+														$$ = createNode(EXP_node, "Mod", "");
 														addChild($$,$1);
 														addChild($$,$3);
 													}
 												}
 		| PLUS ExprAux %prec PRECEDENCE 		{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Plus","");
+														$$ = createNode(EXP_node, "Plus","");
 														addChild($$, $2);
 													}
 												}
 		| MINUS ExprAux %prec PRECEDENCE 		{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Minus","");
+														$$ = createNode(EXP_node, "Minus","");
 														addChild($$, $2);
 													}
 												}
 		| NOT ExprAux %prec PRECEDENCE 			{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Not","");
+														$$ = createNode(EXP_node, "Not","");
 														addChild($$, $2);
 													}
 												}
@@ -880,7 +880,7 @@ ExprAux: MethodInvocation						{
 												}
 		| ID DOTLENGTH 							{
 													if (contaErros == 0 && valorT == 1){
-														$$ = createNode(OTHER_node, "Length", "");
+														$$ = createNode(EXP_node, "Length", "");
 														aux = createNode(ID_node, "Id",$1);
 														addChild($$,aux);
 													}
@@ -955,13 +955,15 @@ int main(int argc, char *argv[])
     /* Imprime as tabelas */
     if(valorS && contaErros==0){
         tab = initTables(root);
+        //TreeAnt(root,0,tab,tab);
         printTables(tab);
         printf("\n");
     }
 
     if(contaErros == 0 && valorT == 1){
-    	printTree(root, 0);
+    	printTree(root, 0, valorS);
     }
+    clearTables(tab);
     clearTree(root);
     free(auxType);
 
