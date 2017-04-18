@@ -1,14 +1,13 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
-/* Skeleton interface for Bison's Yacc-like parsers in C
+/* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,9 +15,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -33,60 +30,69 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* Tokens.  */
+#ifndef YY_YY_Y_TAB_H_INCLUDED
+# define YY_YY_Y_TAB_H_INCLUDED
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int yydebug;
+#endif
+
+/* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     PRECEDENCE = 258,
-     STRLIT = 259,
-     REALLIT = 260,
-     DECLIT = 261,
-     BOOLLIT = 262,
-     ID = 263,
-     BOOL = 264,
-     INT = 265,
-     DOUBLE = 266,
-     RESERVED = 267,
-     CLASS = 268,
-     DO = 269,
-     DOTLENGTH = 270,
-     ELSE = 271,
-     IF = 272,
-     PARSEINT = 273,
-     PRINT = 274,
-     PUBLIC = 275,
-     RETURN = 276,
-     STATIC = 277,
-     STRING = 278,
-     VOID = 279,
-     WHILE = 280,
-     OCURV = 281,
-     CCURV = 282,
-     OBRACE = 283,
-     CBRACE = 284,
-     OSQUARE = 285,
-     CSQUARE = 286,
-     AND = 287,
-     OR = 288,
-     LT = 289,
-     GT = 290,
-     EQ = 291,
-     NEQ = 292,
-     LEQ = 293,
-     GEQ = 294,
-     PLUS = 295,
-     MINUS = 296,
-     STAR = 297,
-     DIV = 298,
-     MOD = 299,
-     NOT = 300,
-     ASSIGN = 301,
-     SEMI = 302,
-     COMMA = 303,
-     LOWER_THAN_ELSE = 304
-   };
+  enum yytokentype
+  {
+    PRECEDENCE = 258,
+    STRLIT = 259,
+    REALLIT = 260,
+    DECLIT = 261,
+    BOOLLIT = 262,
+    ID = 263,
+    BOOL = 264,
+    INT = 265,
+    DOUBLE = 266,
+    RESERVED = 267,
+    CLASS = 268,
+    DO = 269,
+    DOTLENGTH = 270,
+    ELSE = 271,
+    IF = 272,
+    PARSEINT = 273,
+    PRINT = 274,
+    PUBLIC = 275,
+    RETURN = 276,
+    STATIC = 277,
+    STRING = 278,
+    VOID = 279,
+    WHILE = 280,
+    OCURV = 281,
+    CCURV = 282,
+    OBRACE = 283,
+    CBRACE = 284,
+    OSQUARE = 285,
+    CSQUARE = 286,
+    AND = 287,
+    OR = 288,
+    LT = 289,
+    GT = 290,
+    EQ = 291,
+    NEQ = 292,
+    LEQ = 293,
+    GEQ = 294,
+    PLUS = 295,
+    MINUS = 296,
+    STAR = 297,
+    DIV = 298,
+    MOD = 299,
+    NOT = 300,
+    ASSIGN = 301,
+    SEMI = 302,
+    COMMA = 303,
+    LOWER_THAN_ELSE = 304
+  };
 #endif
 /* Tokens.  */
 #define PRECEDENCE 258
@@ -137,23 +143,27 @@
 #define COMMA 303
 #define LOWER_THAN_ELSE 304
 
-
-
-
+/* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-#line 45 "jac.y"
+
+union YYSTYPE
 {
+#line 45 "jac.y" /* yacc.c:1909  */
+
     char* val;
     struct node* no;
-}
-/* Line 1529 of yacc.c.  */
-#line 152 "y.tab.h"
-	YYSTYPE;
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+
+#line 157 "y.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
 #endif
+
 
 extern YYSTYPE yylval;
 
+int yyparse (void);
+
+#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
