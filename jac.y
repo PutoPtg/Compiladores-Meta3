@@ -955,7 +955,7 @@ int main(int argc, char *argv[])
     /* Imprime as tabelas */
     if(valorS && contaErros==0){
         tab = initTables(root);
-        //TreeAnt(root,0,tab,tab);
+        TreeAnt(root,0,tab,tab);
         printTables(tab);
         printf("\n");
     }

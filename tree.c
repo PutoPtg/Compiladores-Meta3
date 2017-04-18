@@ -4,7 +4,7 @@
 *Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática
 *Manuel Madeira Amado - 2006131282
 *Xavier Silva - 2013153577
-*Versão 0.06
+*Versão 0.07
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -106,47 +106,108 @@ void addBrother(node* left, node* right)
 ************************************************************************************/
 void printTree(node* current, int level, int valorS)
 {
+    int i;
     if(current==NULL)
     {
         return;
     }
-    int i;
+    else{
 
+        for(i=0; i<level; i++)
+            {
+                printf("..");
+            }
 
-    for(i=0; i<level; i++)
-        {
-            printf("..");
-        }
-
-
-        if(current->nodeType == ID_node)
-        {
-            printf("Id(%s)\n",current->var);
-        }
-        else if(current->nodeType == BOOLLIT_node)
-        {
-            printf("BoolLit(%s)\n", current->var);
-        }
-        else if(current->nodeType == DECLIT_node)
-        {
-            printf("DecLit(%s)\n", current->var);
-        }
-        else if(current->nodeType == STRLIT_node)
-        {
-            printf("StrLit(%s)\n", current->var);
-        }
-        else if(current->nodeType == REALLIT_node)
-        {
-            printf("RealLit(%s)\n", current->var);
-        }
-        else
-        {
-            printf("%s\n", current->nodeTypeName);
-        }
-        for(i=0; i<current->numChildren; i++)
-        {
-            printTree(current->children[i], level+1, valorS);
-        }
+            if(valorS == 1){
+                if(current->nodeType == EXP_node){
+                    if(strcmp(current->nodeTypeName, "Eq") == 0 || strcmp(current->nodeTypeName, "Geq") == 0 || strcmp(current->nodeTypeName, "Gt") == 0 ||
+                        strcmp(current->nodeTypeName, "Leq") == 0 || strcmp(current->nodeTypeName, "Lt") == 0 || strcmp(current->nodeTypeName, "Neq") == 0 ){
+                        printf("%s - %s\n",current->nodeTypeName, current->anot);
+                    }
+                    else if(strcmp(current->nodeTypeName,"Id")==0){
+                        if(strcmp(current->anot,"")==0){
+                          strcpy(current->anot,"undef");
+                        }
+                        printf("Id(%s) - %s\n",current->var,current->anot);
+                    }
+                    else{
+                        printf("%s - %s\n", current->nodeTypeName,current->anot);
+                  }
+                }else if(current->nodeType == STRLIT_node){
+                    if(strcmp(current->nodeTypeName,"Strlit")==0){
+                        printf("StrLit(%s) - %s\n", current->var,current->anot);
+                    }
+                }
+                else if(current->nodeType == DECLIT_node){
+                    if(strcmp(current->nodeTypeName,"DecLit")==0){
+                        printf("DecLit(%s) - %s\n", current->var,current->anot);
+                    }
+                }
+                else{
+                    if(current->nodeType == ID_node)
+                    {
+                        printf("Id(%s)\n",current->var);
+                    }
+                    else if(current->nodeType == BOOLLIT_node)
+                    {
+                        printf("BoolLit(%s)\n", current->var);
+                    }
+                    else if(current->nodeType == DECLIT_node)
+                    {
+                        printf("DecLit(%s)\n", current->var);
+                    }
+                    else if(current->nodeType == STRLIT_node)
+                    {
+                        printf("StrLit(%s)\n", current->var);
+                    }
+                    else if(current->nodeType == REALLIT_node)
+                    {
+                        printf("RealLit(%s)\n", current->var);
+                    }
+                    else
+                    {
+                        if(strcmp(current->nodeTypeName, "Assign") == 0){
+                            printf("Assign - %s\n",current->anot);
+                        }
+                        else{
+                            printf("%s\n", current->nodeTypeName);
+                        }
+                        
+                    }
+                }
+            }
+            else{
+                if(current->nodeType == ID_node)
+                {
+                    printf("Id(%s)\n",current->var);
+                }
+                else if(current->nodeType == BOOLLIT_node)
+                {
+                    printf("BoolLit(%s)\n", current->var);
+                }
+                else if(current->nodeType == DECLIT_node)
+                {
+                    printf("DecLit(%s)\n", current->var);
+                }
+                else if(current->nodeType == STRLIT_node)
+                {
+                    printf("StrLit(%s)\n", current->var);
+                }
+                else if(current->nodeType == REALLIT_node)
+                {
+                    printf("RealLit(%s)\n", current->var);
+                }
+                else
+                {
+                    printf("%s\n", current->nodeTypeName);
+                }
+            }
+            
+            for(i=0; i<current->numChildren; i++)
+            {
+                printTree(current->children[i], level+1, valorS);
+            }
+    }
     	
 }
 

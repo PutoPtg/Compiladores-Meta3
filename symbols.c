@@ -4,7 +4,7 @@
 * Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática           *
 * Manuel Madeira Amado - 2006131282                                                 *
 * Xavier Silva - 2013153577                                                         *
-* Versão 0.3                                                                        *
+* Versão 0.4                                                                      *
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -235,7 +235,7 @@ table* initTables(node* root){
   	  		}
   	  	}
 
-  	  	// Ciclo que percorre os filhos de methodBody e vê as VarDecl
+  	  // Ciclo que percorre os filhos de methodBody e vê as VarDecl
     	for(k=0 ; k<aux5->numChildren ; k++){
     		aux6 = aux5->children[k];
 
@@ -347,109 +347,31 @@ void TreeAnt(node* current, int level, table* tabela, table* atual)
 	}
 
 	for(i=0; i<current->numChildren; i++)
-      {
-          TreeAnt(current->children[i], level+1,tabela,atual);
-      }
+  {
+      TreeAnt(current->children[i], level+1,tabela,atual);
+  }
 	if(current->nodeType == EXP_node){
-		if(strcmp(current->nodeTypeName, "StrLit") == 0){
-			strcpy(current->anot,"String");
+		if(strcmp(current->nodeTypeName, "Eq") == 0 || strcmp(current->nodeTypeName, "Geq") == 0 || strcmp(current->nodeTypeName, "Gt") == 0 ||
+      strcmp(current->nodeTypeName, "Leq") == 0 || strcmp(current->nodeTypeName, "Lt") == 0 || strcmp(current->nodeTypeName, "Neq") == 0 ){
+			 strcpy(current->anot,"boolean");
 		}
 	}
-    /*int i,j;
-    int isGlobal  = 0;
-    if(current==NULL)
-    {
-        return;
+  else if(current->nodeType == DECLIT_node){
+    if(strcmp(current->nodeTypeName, "DecLit") == 0){
+      strcpy(current->anot,"int");
     }
-     if(strcmp(current->nodeTypeName,"FuncDefinition")==0){
-    		atual = tabela;
-    		while(strcmp(atual->name,current->children[current->numChildren-3]->var)!=0){
-    			atual = atual->next;
-    		}
-    	}
-      for(i=0; i<current->numChildren; i++)
-      {
-          TreeAnt(current->children[i], level+1,tabela,atual);
-      }
-      if(current->nodeType == EXP_node){
-        if(strcmp(current->nodeTypeName,"StrLit")==0){
-            sprintf(current->anot,"char[%d]",lengthEscape(current->var));
-        }else if(strcmp(current->nodeTypeName,"ChrLit")==0){
-            strcpy(current->anot,"int");
-        }else if(strcmp(current->nodeTypeName,"IntLit")==0){
-            strcpy(current->anot,"int");
-        }else if(strcmp(current->nodeTypeName,"Id")==0){
-        	isGlobal=0;
-            for(j=0;j<atual->numSymbols;j++){ // Não GLOBAL
-            	if(strcmp(current->var,atual->symbols[j]->name)==0){
-            		strcpy(current->anot,atual->symbols[j]->type);
-            		isGlobal=1;
-            	}
-            }
-            if(isGlobal==0){ //Não está na local
-            	for(j=0;j<tabela->numSymbols;j++){ //GLOBAL
-              	if(strcmp(current->var,tabela->symbols[j]->name)==0){
-              		strcpy(current->anot,tabela->symbols[j]->type);
-              		isGlobal=1;
-              	}
-              }
-            }
-          }
-          else if(strcmp(current->nodeTypeName,"Call")==0){
-          	for(j=0;j<tabela->numSymbols;j++){ //Não GLOBAL
-            	if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){
-            		strcpy(current->anot,cutType(tabela->symbols[j]->type));
-            		break;
-            	}
-            }
-          }else if(strcmp(current->nodeTypeName,"Mul")==0 || strcmp(current->nodeTypeName,"Div")==0 || strcmp(current->nodeTypeName,"Plus")==0 || strcmp(current->nodeTypeName,"Minus")==0 || strcmp(current->nodeTypeName,"And")==0 || strcmp(current->nodeTypeName,"Or")==0 || strcmp(current->nodeTypeName,"Eq")==0 || strcmp(current->nodeTypeName,"Ne")==0 || strcmp(current->nodeTypeName,"Le")==0 || strcmp(current->nodeTypeName,"Lt")==0 || strcmp(current->nodeTypeName,"Gt")==0 || strcmp(current->nodeTypeName,"Ge")==0 || strcmp(current->nodeTypeName,"Not")==0  ||strcmp(current->nodeTypeName,"Mod")==0){
-            strcpy(current->anot,"int");
-          }else if(strcmp(current->nodeTypeName,"Add")==0){
-             strcpy(current->anot,"int");
-             if(countPointer(TransfPointer(current->children[0]->anot))!=0){
-                strcpy(current->anot,TransfPointer(current->children[0]->anot));
-              } else if(countPointer(TransfPointer(current->children[1]->anot))!=0){
-                strcpy(current->anot,TransfPointer(current->children[1]->anot));
-              }if(countPointer(TransfPointer(current->children[0]->anot))!=0 && countPointer(TransfPointer(current->children[1]->anot))!=0){
-              	strcpy(current->anot,"undef");
-              }
-          }else if(strcmp(current->nodeTypeName,"Sub")==0){
-            strcpy(current->anot,"int");
-            if(countPointer(TransfPointer(current->children[0]->anot))!=0 && countPointer(TransfPointer(current->children[1]->anot))==0){
-              strcpy(current->anot,TransfPointer(current->children[0]->anot));
-            } else if(countPointer(TransfPointer(current->children[1]->anot))!=0 && countPointer(TransfPointer(current->children[0]->anot))==0){
-              strcpy(current->anot,TransfPointer(current->children[1]->anot));
-            } else if(countPointer(TransfPointer(current->children[1]->anot)) == countPointer(TransfPointer(current->children[0]->anot))){
-              strcpy(current->anot,"int");
-            }else if(countPointer(TransfPointer(current->children[1]->anot)) != countPointer(TransfPointer(current->children[0]->anot))){
-              strcpy(current->anot,"undef");
-            }
-          }else if(strcmp(current->nodeTypeName,"Comma")==0){
-            strcpy(current->anot,TransfPointer(current->children[1]->anot));
-          }else if(strcmp(current->nodeTypeName,"Store")==0){
-            strcpy(current->anot,current->children[0]->anot);
-          }else if(strcmp(current->nodeTypeName,"Deref")==0){
-          strcpy(current->anot,cutDerefPointer(current->children[0]->anot,1));
-        	}
-        	else if(strcmp(current->nodeTypeName,"DerefPointer")==0){
-          		strcpy(current->anot,cutDerefPointer(current->children[0]->anot,1));
-	        }
-	        else if(strcmp(current->nodeTypeName,"Addr")==0){
-	    		  strcpy(current->anot,TransfPointer(current->children[0]->anot));
-	  		    strcat(current->anot,"*");
-	      		    
-      		}
-          
-          else{
-            		for(j=0;j<atual->numSymbols;j++){
-	                	if(strcmp(current->children[0]->var,atual->symbols[j]->name)==0){
-	                		strcpy(current->anot,atual->symbols[j]->type);
-	                		break;
-	                	}
-	                }
+  }
+  else if(current->nodeType == STRLIT_node){
+    if(strcmp(current->nodeTypeName, "Strlit") == 0){
+      strcpy(current->anot,"String");
+    }
+  }
+  else{
+    if(strcmp(current->nodeTypeName, "Assign") == 0){
+      strcpy(current->anot,"int");
+    }
+  }
 
-                }
-    }*/
 }
 
 void checkGlobalTable(node* current, table* tab){
