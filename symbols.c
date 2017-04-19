@@ -183,6 +183,7 @@ table* initTables(node* root){
       	aux3 = aux->children[0]->children[2]; //MethodParams para ver os paraâmetros  
       	aux5 = aux->children[1];	//Guarda valor para utilizar nos varDecl
       	sprintf(value, "%s", "(");
+
       	for(j=0 ; j<aux3->numChildren ; j++){
         	aux4 = aux3->children[j];  
         
