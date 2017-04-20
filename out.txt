@@ -1,48 +1,48 @@
 ===== Class methodDecls Symbol Table =====
-tf		bool
+tf		boolean
 main	(String[])	int
-bool1	(bool)	bool
-bool2	()	bool
-bool3	()	bool
-bool4	()	bool
-bool5	()	bool
-bool6	()	bool
-bool7	()	bool
-bool8	()	bool
-bool9	()	bool
+bool1	(boolean)	boolean
+bool2	()	boolean
+bool3	()	boolean
+bool4	()	boolean
+bool5	()	boolean
+bool6	()	boolean
+bool7	()	boolean
+bool8	()	boolean
+bool9	()	boolean
 
 ===== Method main(String[]) Symbol Table =====
 return		int
 args		String[]	param
 a		int
 
-===== Method bool1(bool) Symbol Table =====
-return		bool
-a		bool	param
+===== Method bool1(boolean) Symbol Table =====
+return		boolean
+a		boolean	param
 
 ===== Method bool2() Symbol Table =====
-return		bool
+return		boolean
 
 ===== Method bool3() Symbol Table =====
-return		bool
+return		boolean
 
 ===== Method bool4() Symbol Table =====
-return		bool
+return		boolean
 
 ===== Method bool5() Symbol Table =====
-return		bool
+return		boolean
 
 ===== Method bool6() Symbol Table =====
-return		bool
+return		boolean
 
 ===== Method bool7() Symbol Table =====
-return		bool
+return		boolean
 
 ===== Method bool8() Symbol Table =====
-return		bool
+return		boolean
 
 ===== Method bool9() Symbol Table =====
-return		bool
+return		boolean
 
 Program
 ..Id(methodDecls)
