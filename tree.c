@@ -132,7 +132,7 @@ void printTree(node* current, int level, int valorS)
                     }
                     else{
                         printf("%s - %s\n", current->nodeTypeName,current->anot);
-                  }
+                    }
                 }else if(current->nodeType == STRLIT_node){
                     if(strcmp(current->nodeTypeName,"Strlit")==0){
                         printf("StrLit(%s) - %s\n", current->var,current->anot);
