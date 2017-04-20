@@ -171,7 +171,14 @@ table* initTables(node* root){
     aux = root->children[i];
     if(strcmp(aux->nodeTypeName, "FieldDecl") == 0){
       aux2 = aux->children[1];  //guarda o ID do nome
-      AddSymbol(global, createSymbol(aux2->var, "", toLower(aux->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
+      // verifica se o Type é boolean 
+      if(strcmp(aux->children[0]->nodeTypeName, "Bool") == 0){
+        AddSymbol(global, createSymbol(aux2->var, "", "boolean",nullParam,-1,-1,1,0));
+      }
+      else{
+        AddSymbol(global, createSymbol(aux2->var, "", toLower(aux->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
+      }
+      
     }
 
     if(strcmp(aux->nodeTypeName, "MethodDecl") == 0){
@@ -191,6 +198,9 @@ table* initTables(node* root){
 	        	if(strcmp(aux4->children[0]->nodeTypeName,"StringArray") == 0){
 	          		strcat(value, "String[]");
 	        	}
+            else if(strcmp(aux4->children[0]->nodeTypeName,"Bool") == 0){
+                strcat(value, "boolean");
+            }
 	        	else{
 	          		strcat(value, toLower(aux4->children[0]->nodeTypeName));
 	        	}        
@@ -200,6 +210,9 @@ table* initTables(node* root){
         		if(strcmp(aux4->children[0]->nodeTypeName,"StringArray") == 0){
 	          		strcat(value, "String[]");
 	        	}
+            else if(strcmp(aux4->children[0]->nodeTypeName,"Bool") == 0){
+                strcat(value, "boolean");
+            }
 	        	else{       	
 	          		strcat(value, toLower(aux4->children[0]->nodeTypeName));
 	        	}
@@ -232,16 +245,25 @@ table* initTables(node* root){
   	  	else{
   	  		for(j=0 ; j<aux3->numChildren ; j++){
   	  			aux4 = aux3->children[j];
-  	  			AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
+            if(strcmp(aux4->children[0]->nodeTypeName, "Bool") == 0){
+                AddSymbol(method,createSymbol(aux4->children[1]->var, "", "boolean", paramParam,-1,-1,0,0));
+            }
+            else{
+                AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
+            } 	  			
   	  		}
   	  	}
 
   	  // Ciclo que percorre os filhos de methodBody e vê as VarDecl
     	for(k=0 ; k<aux5->numChildren ; k++){
     		aux6 = aux5->children[k];
-
     		if(strcmp(aux6->nodeTypeName, "VarDecl") == 0){
-    			AddSymbol(method,createSymbol(aux6->children[1]->var, "", toLower(aux6->children[0]->nodeTypeName), nullParam,-1,-1,0,0));
+          if(strcmp(aux6->children[0]->nodeTypeName, "Bool") == 0){
+            AddSymbol(method,createSymbol(aux6->children[1]->var, "", "boolean", nullParam,-1,-1,0,0));
+          }
+          else{
+            AddSymbol(method,createSymbol(aux6->children[1]->var, "", toLower(aux6->children[0]->nodeTypeName), nullParam,-1,-1,0,0));
+          }
     		} 
     	}
 	}
