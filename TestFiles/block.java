@@ -1,4 +1,4 @@
-class gcd {
+class block {
 	public static void main(String[] args) {
 		int a, b;
 		a = Integer.parseInt(args[0]);
@@ -6,7 +6,7 @@ class gcd {
 		if (a == 0)
 			System.out.println(b);
 		else {
-					
+
 		}
 	}
 }

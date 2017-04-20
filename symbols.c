@@ -171,7 +171,7 @@ table* initTables(node* root){
     aux = root->children[i];
     if(strcmp(aux->nodeTypeName, "FieldDecl") == 0){
       aux2 = aux->children[1];  //guarda o ID do nome
-      // verifica se o Type é boolean 
+      // verifica se o Type é boolean
       if(strcmp(aux->children[0]->nodeTypeName, "Bool") == 0){
         AddSymbol(global, createSymbol(aux2->var, "", "boolean",nullParam,-1,-1,1,0));
       }
@@ -230,7 +230,7 @@ table* initTables(node* root){
         else{
             AddSymbol(global, createSymbol(aux2->var, value, toLower(aux->children[0]->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
         }
-      	
+
 
       	// Iniciar as tabelas de métodos
       	char methodName[256];
@@ -244,7 +244,7 @@ table* initTables(node* root){
         else{
             AddSymbol(method,createSymbol("return", "", toLower(aux->children[0]->children[0]->nodeTypeName), nullParam,-1,-1,0,0));
         }
-      	
+
       	current->next = method;
   	  	method->prev = current;
   	  	current = current->next;
@@ -261,7 +261,7 @@ table* initTables(node* root){
             }
             else{
                 AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
-            }   
+            }
   	  		}
   	  	}
 
