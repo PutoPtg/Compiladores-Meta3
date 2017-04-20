@@ -1,27 +1,57 @@
-===== Class gcd2 Symbol Table =====
-gcd		int
-main	(String[])	void
-gcd	(int,int)	int
+===== Class methodDecls Symbol Table =====
+tf		bool
+main	(String[])	int
+bool1	(bool)	bool
+bool2	()	bool
+bool3	()	bool
+bool4	()	bool
+bool5	()	bool
+bool6	()	bool
+bool7	()	bool
+bool8	()	bool
+bool9	()	bool
 
 ===== Method main(String[]) Symbol Table =====
-return		void
+return		int
 args		String[]	param
 a		int
-b		int
 
-===== Method gcd(int,int) Symbol Table =====
-return		int
-a		int	param
-b		int	param
+===== Method bool1(bool) Symbol Table =====
+return		bool
+a		bool	param
+
+===== Method bool2() Symbol Table =====
+return		bool
+
+===== Method bool3() Symbol Table =====
+return		bool
+
+===== Method bool4() Symbol Table =====
+return		bool
+
+===== Method bool5() Symbol Table =====
+return		bool
+
+===== Method bool6() Symbol Table =====
+return		bool
+
+===== Method bool7() Symbol Table =====
+return		bool
+
+===== Method bool8() Symbol Table =====
+return		bool
+
+===== Method bool9() Symbol Table =====
+return		bool
 
 Program
-..Id(gcd2)
+..Id(methodDecls)
 ..FieldDecl
-....Int
-....Id(gcd)
+....Bool
+....Id(tf)
 ..MethodDecl
 ....MethodHeader
-......Void
+......Int
 ......Id(main)
 ......MethodParams
 ........ParamDecl
@@ -31,71 +61,122 @@ Program
 ......VarDecl
 ........Int
 ........Id(a)
-......VarDecl
-........Int
-........Id(b)
-......If
-........Geq
-..........Length
-............Id(args)
-..........DecLit(2)
+......Assign - int
+........Id(a)
+........DecLit(0) - int
+......While
+........Lt - boolean
+..........Id(a)
+..........DecLit(0) - int
 ........Block
-..........Assign
+......While
+........Lt - boolean
+..........Id(a)
+..........DecLit(0) - int
+........Assign - int
+..........Id(a)
+..........DecLit(1) - int
+......While
+........Gt - boolean
+..........Add - 
 ............Id(a)
-............ParseArgs
-..............Id(args)
-..............DecLit(0)
-..........Assign
 ............Id(b)
-............ParseArgs
-..............Id(args)
-..............DecLit(1)
-..........Assign
-............Id(gcd)
-............Call
-..............Id(gcd)
-..............Id(a)
-..............Id(b)
-..........Print
-............Id(gcd)
-........Print
-..........StrLit("Error: two parameters required.")
+..........DecLit(0) - int
+........Assign - int
+..........Id(a)
+..........DecLit(5) - int
+......Call
+........Id(bool1)
+........Id(a)
+......Call
+........Id(bool2)
+......Call
+........Id(bool3)
+......Call
+........Id(bool4)
+......Call
+........Id(bool5)
+......Call
+........Id(bool6)
+......Call
+........Id(bool7)
+......Call
+........Id(bool8)
+......Return
+........Call
+..........Id(bool9)
 ..MethodDecl
 ....MethodHeader
-......Int
-......Id(gcd)
+......Bool
+......Id(bool1)
 ......MethodParams
 ........ParamDecl
-..........Int
+..........Bool
 ..........Id(a)
-........ParamDecl
-..........Int
-..........Id(b)
 ....MethodBody
-......If
-........Eq
-..........Id(a)
-..........DecLit(0)
-........Return
-..........Id(b)
-........Block
-..........While
-............Gt
-..............Id(b)
-..............DecLit(0)
-............If
-..............Gt
-................Id(a)
-................Id(b)
-..............Assign
-................Id(a)
-................Sub
-..................Id(a)
-..................Id(b)
-..............Assign
-................Id(b)
-................Sub
-..................Id(b)
-..................Id(a)
-..........Return
-............Id(a)
+......Return
+........BoolLit(false)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(bool2)
+......MethodParams
+....MethodBody
+......Return
+........BoolLit(false)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(bool3)
+......MethodParams
+....MethodBody
+......Return
+........BoolLit(false)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(bool4)
+......MethodParams
+....MethodBody
+......Return
+........BoolLit(false)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(bool5)
+......MethodParams
+....MethodBody
+......Return
+........BoolLit(false)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(bool6)
+......MethodParams
+....MethodBody
+......Return
+........BoolLit(false)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(bool7)
+......MethodParams
+....MethodBody
+......Return
+........BoolLit(false)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(bool8)
+......MethodParams
+....MethodBody
+......Return
+........BoolLit(false)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(bool9)
+......MethodParams
+....MethodBody
+......Return
+........BoolLit(false)

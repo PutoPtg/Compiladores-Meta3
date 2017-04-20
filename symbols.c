@@ -167,18 +167,11 @@ table* initTables(node* root){
   node *aux2, *aux3, *aux4, *aux5, *aux6;
 
   for(i=0 ; i<root->numChildren ; i++){
-    
+
     aux = root->children[i];
     if(strcmp(aux->nodeTypeName, "FieldDecl") == 0){
       aux2 = aux->children[1];  //guarda o ID do nome
-      // verifica se o Type é boolean 
-      if(strcmp(aux->children[0]->nodeTypeName, "Bool") == 0){
-        AddSymbol(global, createSymbol(aux2->var, "", "boolean",nullParam,-1,-1,1,0));
-      }
-      else{
-        AddSymbol(global, createSymbol(aux2->var, "", toLower(aux->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
-      }
-      
+      AddSymbol(global, createSymbol(aux2->var, "", toLower(aux->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
     }
 
     if(strcmp(aux->nodeTypeName, "MethodDecl") == 0){
@@ -187,53 +180,51 @@ table* initTables(node* root){
       	int contaChildren = 0;
       	aux2 = aux->children[0]->children[1]; //guarda o ID do nome
 
-      	aux3 = aux->children[0]->children[2]; //MethodParams para ver os paraâmetros  
+      	aux3 = aux->children[0]->children[2]; //MethodParams para ver os paraâmetros
       	aux5 = aux->children[1];	//Guarda valor para utilizar nos varDecl
       	sprintf(value, "%s", "(");
 
       	for(j=0 ; j<aux3->numChildren ; j++){
-        	aux4 = aux3->children[j];  
-        
+        	aux4 = aux3->children[j];
+
         	if(aux3->numChildren <= 1){
 	        	if(strcmp(aux4->children[0]->nodeTypeName,"StringArray") == 0){
 	          		strcat(value, "String[]");
 	        	}
-            else if(strcmp(aux4->children[0]->nodeTypeName,"Bool") == 0){
-                strcat(value, "boolean");
-            }
 	        	else{
 	          		strcat(value, toLower(aux4->children[0]->nodeTypeName));
-	        	}        
+	        	}
         	}
         	else{
         		contaChildren++;
         		if(strcmp(aux4->children[0]->nodeTypeName,"StringArray") == 0){
 	          		strcat(value, "String[]");
 	        	}
-            else if(strcmp(aux4->children[0]->nodeTypeName,"Bool") == 0){
-                strcat(value, "boolean");
-            }
-	        	else{       	
+	        	else{
 	          		strcat(value, toLower(aux4->children[0]->nodeTypeName));
 	        	}
-	        	
+
 	        	if(contaChildren != aux3->numChildren){
 	        		strcat(value, ",");
 	        	}
-	        
-        	}        
+
+        	}
       	}
 
-      	strcat(value, ")"); 
+      	strcat(value, ")");
       	AddSymbol(global, createSymbol(aux2->var, value, toLower(aux->children[0]->children[0]->nodeTypeName),nullParam,-1,-1,1,0));
-      	
+
       	// Iniciar as tabelas de métodos
       	char methodName[256];
       	sprintf(methodName, "%s", aux2->var);
       	strcat(methodName, value);
-      	
+
       	method = createTable(methodTable,methodName);
       	AddSymbol(method,createSymbol("return", "", toLower(aux->children[0]->children[0]->nodeTypeName), nullParam,-1,-1,0,0));
+        //Penso que o erro está aqui
+
+
+        //printf("\n-----%s-----\n", method->symbols->type);
       	current->next = method;
   	  	method->prev = current;
   	  	current = current->next;
@@ -245,30 +236,21 @@ table* initTables(node* root){
   	  	else{
   	  		for(j=0 ; j<aux3->numChildren ; j++){
   	  			aux4 = aux3->children[j];
-            if(strcmp(aux4->children[0]->nodeTypeName, "Bool") == 0){
-                AddSymbol(method,createSymbol(aux4->children[1]->var, "", "boolean", paramParam,-1,-1,0,0));
-            }
-            else{
-                AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
-            } 	  			
+  	  			AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
   	  		}
   	  	}
 
   	  // Ciclo que percorre os filhos de methodBody e vê as VarDecl
     	for(k=0 ; k<aux5->numChildren ; k++){
     		aux6 = aux5->children[k];
+
     		if(strcmp(aux6->nodeTypeName, "VarDecl") == 0){
-          if(strcmp(aux6->children[0]->nodeTypeName, "Bool") == 0){
-            AddSymbol(method,createSymbol(aux6->children[1]->var, "", "boolean", nullParam,-1,-1,0,0));
-          }
-          else{
-            AddSymbol(method,createSymbol(aux6->children[1]->var, "", toLower(aux6->children[0]->nodeTypeName), nullParam,-1,-1,0,0));
-          }
-    		} 
+    			AddSymbol(method,createSymbol(aux6->children[1]->var, "", toLower(aux6->children[0]->nodeTypeName), nullParam,-1,-1,0,0));
+    		}
     	}
 	}
   }
-	
+
 	return global;
 }
 
@@ -413,5 +395,3 @@ void checkGlobalTable(node* current, table* tab){
       }
   }
 }
-
-
