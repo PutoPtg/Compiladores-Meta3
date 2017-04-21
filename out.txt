@@ -15,23 +15,23 @@ c		double
 
 ===== Method bool(String[]) Symbol Table =====
 return		boolean
-a		stringarray	param
+a		String[]	param
 
 ===== Method bool(String[]) Symbol Table =====
 return		boolean
-a		stringarray	param
+a		String[]	param
 
 ===== Method bool(String[]) Symbol Table =====
 return		boolean
-a		stringarray	param
+a		String[]	param
 
 ===== Method bool(String[]) Symbol Table =====
 return		boolean
-a		stringarray	param
+a		String[]	param
 
 ===== Method bool(String[]) Symbol Table =====
 return		boolean
-b		stringarray	param
+b		String[]	param
 
 Program
 ..Id(stringArrays)

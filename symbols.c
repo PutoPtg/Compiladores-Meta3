@@ -4,7 +4,7 @@
 * Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática           *
 * Manuel Madeira Amado - 2006131282                                                 *
 * Xavier Silva - 2013153577                                                         *
-* Versão 0.5                                                                      *
+* Versão 0.6                                                                     *
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -258,6 +258,9 @@ table* initTables(node* root){
   	  			aux4 = aux3->children[j];
   	  			if(strcmp(aux4->children[0]->nodeTypeName, "Bool") == 0){
                 AddSymbol(method,createSymbol(aux4->children[1]->var, "", "boolean", paramParam,-1,-1,0,0));
+            }
+            else if(strcmp(aux4->children[0]->nodeTypeName, "StringArray") == 0){
+                AddSymbol(method,createSymbol(aux4->children[1]->var, "", "String[]", paramParam,-1,-1,0,0));
             }
             else{
                 AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
