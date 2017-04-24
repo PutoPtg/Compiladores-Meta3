@@ -4,7 +4,7 @@
 * Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática           *
 * Manuel Madeira Amado - 2006131282                                                 *
 * Xavier Silva - 2013153577                                                         *
-* Versão 0.6                                                                     *
+* Versão 0.7                                                                     *
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -19,7 +19,9 @@
 
 int numFunc = 0;
 
-//Cria a tabela de símbolos
+/*******************************************************************************
+* Cria a tabela de símbolos                                                    *
+*******************************************************************************/
 table* createTable(table_type type, char* name)
 {
     table* tab = (table*)malloc(sizeof(table));
@@ -35,7 +37,9 @@ table* createTable(table_type type, char* name)
     return tab;
 }
 
-//Cria símbolos
+/*******************************************************************************
+* Cria Símbolos                                                                *
+*******************************************************************************/
 symbol* createSymbol(char* name, char* paramTypes ,char* type, param_type param, long long int line, long long int column, int isFunction, int numParam)
 {
     symbol* sym = (symbol*)malloc(sizeof(symbol));
@@ -54,7 +58,9 @@ symbol* createSymbol(char* name, char* paramTypes ,char* type, param_type param,
     return sym;
 }
 
-//Adicionar um simbolo à tabela
+/*******************************************************************************
+* Adiciona Símbolos à tabela                                                   *
+*******************************************************************************/
 void AddSymbol(table* tab, symbol* sym)
 {
     tab->numSymbols++;
@@ -62,7 +68,9 @@ void AddSymbol(table* tab, symbol* sym)
     tab->symbols[tab->numSymbols-1] = sym;
 }
 
-//Imprime as tabelas
+/*******************************************************************************
+* Imprime as tabela de símbolos                                                *
+*******************************************************************************/
 void printTables(table* tab)
 {
     int i;
@@ -89,7 +97,9 @@ void printTables(table* tab)
     }
 }
 
-//Imprime os simbolos
+/*******************************************************************************
+* Imprime os símbolos                                                    *
+*******************************************************************************/
 void printSymbol(symbol* sym)
 {
     if(sym==NULL)
@@ -115,7 +125,9 @@ void printSymbol(symbol* sym)
 }
 
 
-//Elimina as tabelas
+/*******************************************************************************
+* Elimina as tabelas                                                    *
+*******************************************************************************/
 void clearTables(table* tab)
 {
     if(tab == NULL)
@@ -136,7 +148,9 @@ void clearTables(table* tab)
     return;
 }
 
-/*Coloca a minusculas*/
+/*******************************************************************************
+* Coloca uma string em minúsculas                                              *
+*******************************************************************************/
 char* toLower(char* string)
 {
     char* result = (char*)calloc(1+strlen(string), sizeof(char));
@@ -377,41 +391,59 @@ int lengthEscape(char* string){
 		return strlen(string)-1;
 }
 
-void TreeAnt(node* current, int level, table* tabela, table* atual)
-{
+/*******************************************************************************
+* Cria Árvore Anotada                                                          *
+*******************************************************************************/
+void TreeAnt(node* current, int level, table* tabela, table* atual){
 	int i;
 	if(current == NULL){
 		return;
 	}
 
-	for(i=0; i<current->numChildren; i++)
-  {
-      TreeAnt(current->children[i], level+1,tabela,atual);
-  }
+	for(i=0; i<current->numChildren; i++){
+        TreeAnt(current->children[i], level+1,tabela,atual);
+    }
 	if(current->nodeType == EXP_node){
-		if(strcmp(current->nodeTypeName, "Eq") == 0 || strcmp(current->nodeTypeName, "Geq") == 0 || strcmp(current->nodeTypeName, "Gt") == 0 ||
-      strcmp(current->nodeTypeName, "Leq") == 0 || strcmp(current->nodeTypeName, "Lt") == 0 || strcmp(current->nodeTypeName, "Neq") == 0 ){
-			 strcpy(current->anot,"boolean");
+		if(strcmp(current->nodeTypeName, "Eq") == 0 ||
+           strcmp(current->nodeTypeName, "Geq") == 0 ||
+           strcmp(current->nodeTypeName, "Gt") == 0 ||
+           strcmp(current->nodeTypeName, "Leq") == 0 ||
+           strcmp(current->nodeTypeName, "Lt") == 0 ||
+           strcmp(current->nodeTypeName, "Neq") == 0 )
+        {
+		    strcpy(current->anot,"boolean");
 		}
+        if(strcmp(current->nodeTypeName, "Length") == 0){
+            strcpy(current->anot,"int");
+        }
 	}
-  else if(current->nodeType == DECLIT_node){
-    if(strcmp(current->nodeTypeName, "DecLit") == 0){
-      strcpy(current->anot,"int");
+    else{
+        if(current->nodeType == DECLIT_node){
+                if(strcmp(current->nodeTypeName, "DecLit") == 0){
+                    strcpy(current->anot,"int");
+                }
+        }
+        else{
+            if(current->nodeType == STRLIT_node){
+                if(strcmp(current->nodeTypeName, "Strlit") == 0){
+                    strcpy(current->anot,"String");
+                }
+            }
+            else{
+                if(strcmp(current->nodeTypeName, "Assign") == 0){
+                    strcpy(current->anot,"int");
+                }
+            }
+        }
     }
-  }
-  else if(current->nodeType == STRLIT_node){
-    if(strcmp(current->nodeTypeName, "Strlit") == 0){
-      strcpy(current->anot,"String");
-    }
-  }
-  else{
-    if(strcmp(current->nodeTypeName, "Assign") == 0){
-      strcpy(current->anot,"int");
-    }
-  }
 
+    if(current->nodeType == OTHER_node){
+        if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
+            strcpy(current->anot,"int");
+            printf("----------TEST:%s----------\n", current->anot);
+        }
+    }
 }
-
 void checkGlobalTable(node* current, table* tab){
     int i, j;
     /*Variáveis globais e funçoes com o mesmo nome*/

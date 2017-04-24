@@ -1,43 +1,29 @@
-===== Class stringArrays Symbol Table =====
-main	(String[])	int
-bool	(String[])	boolean
-bool	(String[])	boolean
-bool	(String[])	boolean
-bool	(String[])	boolean
-bool	(String[])	boolean
+----------TEST:int----------
+----------TEST:int----------
+===== Class gcd2 Symbol Table =====
+gcd		int
+main	(String[])	void
+gcd	(int,int)	int
 
 ===== Method main(String[]) Symbol Table =====
-return		int
+return		void
 args		String[]	param
 a		int
-b		boolean
-c		double
+b		int
 
-===== Method bool(String[]) Symbol Table =====
-return		boolean
-a		String[]	param
-
-===== Method bool(String[]) Symbol Table =====
-return		boolean
-a		String[]	param
-
-===== Method bool(String[]) Symbol Table =====
-return		boolean
-a		String[]	param
-
-===== Method bool(String[]) Symbol Table =====
-return		boolean
-a		String[]	param
-
-===== Method bool(String[]) Symbol Table =====
-return		boolean
-b		String[]	param
+===== Method gcd(int,int) Symbol Table =====
+return		int
+a		int	param
+b		int	param
 
 Program
-..Id(stringArrays)
+..Id(gcd2)
+..FieldDecl
+....Int
+....Id(gcd)
 ..MethodDecl
 ....MethodHeader
-......Int
+......Void
 ......Id(main)
 ......MethodParams
 ........ParamDecl
@@ -48,65 +34,70 @@ Program
 ........Int
 ........Id(a)
 ......VarDecl
-........Bool
+........Int
 ........Id(b)
-......VarDecl
-........Double
-........Id(c)
-......Return
-........DecLit(1) - int
+......If
+........Geq - boolean
+..........Length - int
+............Id(args)
+..........DecLit(2) - int
+........Block
+..........Assign - int
+............Id(a)
+............ParseArgs
+..............Id(args)
+..............DecLit(0) - int
+..........Assign - int
+............Id(b)
+............ParseArgs
+..............Id(args)
+..............DecLit(1) - int
+..........Assign - int
+............Id(gcd)
+............Call
+..............Id(gcd)
+..............Id(a)
+..............Id(b)
+..........Print
+............Id(gcd)
+........Print
+..........StrLit("Error: two parameters required.") - String
 ..MethodDecl
 ....MethodHeader
-......Bool
-......Id(bool)
+......Int
+......Id(gcd)
 ......MethodParams
 ........ParamDecl
-..........StringArray
+..........Int
 ..........Id(a)
-....MethodBody
-......Return
-........BoolLit(false)
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(bool)
-......MethodParams
 ........ParamDecl
-..........StringArray
-..........Id(a)
-....MethodBody
-......Return
-........BoolLit(false)
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(bool)
-......MethodParams
-........ParamDecl
-..........StringArray
-..........Id(a)
-....MethodBody
-......Return
-........BoolLit(false)
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(bool)
-......MethodParams
-........ParamDecl
-..........StringArray
-..........Id(a)
-....MethodBody
-......Return
-........BoolLit(false)
-..MethodDecl
-....MethodHeader
-......Bool
-......Id(bool)
-......MethodParams
-........ParamDecl
-..........StringArray
+..........Int
 ..........Id(b)
 ....MethodBody
-......Return
-........BoolLit(false)
+......If
+........Eq - boolean
+..........Id(a)
+..........DecLit(0) - int
+........Return
+..........Id(b)
+........Block
+..........While
+............Gt - boolean
+..............Id(b)
+..............DecLit(0) - int
+............If
+..............Gt - boolean
+................Id(a)
+................Id(b)
+..............Assign - int
+................Id(a)
+................Sub - 
+..................Id(a)
+..................Id(b)
+..............Assign - int
+................Id(b)
+................Sub - 
+..................Id(b)
+..................Id(a)
+..........Return
+............Id(a)
