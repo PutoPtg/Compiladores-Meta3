@@ -1,5 +1,14 @@
-----------TEST:int----------
-----------TEST:int----------
+----------ID-TEST:int----------
+----------ID-TEST:int----------
+----------ID-TEST:void----------
+----------ID-TEST:int----------
+----------ID-TEST:int----------
+----------ID-TEST:int----------
+----------ID-TEST:int----------
+----------ID-TEST:int----------
+----------ID-TEST:int----------
+----------ID-TEST:int----------
+----------ID-TEST:int----------
 ===== Class gcd2 Symbol Table =====
 gcd		int
 main	(String[])	void

@@ -4,7 +4,7 @@
 * Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática           *
 * Manuel Madeira Amado - 2006131282                                                 *
 * Xavier Silva - 2013153577                                                         *
-* Versão 0.7                                                                     *
+* Versão 0.8                                                                     *
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -395,7 +395,7 @@ int lengthEscape(char* string){
 * Cria Árvore Anotada                                                          *
 *******************************************************************************/
 void TreeAnt(node* current, int level, table* tabela, table* atual){
-	int i;
+	int i, j;
 	if(current == NULL){
 		return;
 	}
@@ -433,6 +433,16 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                 if(strcmp(current->nodeTypeName, "Assign") == 0){
                     strcpy(current->anot,"int");
                 }
+                else{
+                    if(strcmp(current->nodeTypeName,"Id")==0){
+                        for(j=0;j<atual->numSymbols;j++){
+                        	if(strcmp(current->var,atual->symbols[j]->name)==0){
+                        		strcpy(current->anot,atual->symbols[j]->type);
+                                printf("----------ID-TEST:%s----------\n", current->anot);
+                        	}
+                        }
+                    }
+                }
             }
         }
     }
@@ -440,7 +450,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
     if(current->nodeType == OTHER_node){
         if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
             strcpy(current->anot,"int");
-            printf("----------TEST:%s----------\n", current->anot);
+            //printf("----------TEST:%s----------\n", current->anot);
         }
     }
 }

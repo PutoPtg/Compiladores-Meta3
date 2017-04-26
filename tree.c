@@ -4,7 +4,7 @@
 *Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática
 *Manuel Madeira Amado - 2006131282
 *Xavier Silva - 2013153577
-*Versão 0.07
+*Versão 0.08
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -172,7 +172,7 @@ void printTree(node* current, int level, int valorS)
                         else{
                             printf("%s\n", current->nodeTypeName);
                         }
-                        
+
                     }
                 }
             }
@@ -199,16 +199,20 @@ void printTree(node* current, int level, int valorS)
                 }
                 else
                 {
-                    printf("%s\n", current->nodeTypeName);
+                    /*if(strcmp(current->var, "") != 0){*/
+                        printf("%s - (%s)\n", current->nodeTypeName, current->var);
+                    /*}else{
+                        printf("%s\n", current->nodeTypeName);
+                    }*/
                 }
             }
-            
+
             for(i=0; i<current->numChildren; i++)
             {
                 printTree(current->children[i], level+1, valorS);
             }
     }
-    	
+
 }
 
 
