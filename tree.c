@@ -146,7 +146,14 @@ void printTree(node* current, int level, int valorS)
                 else{
                     if(current->nodeType == ID_node)
                     {
-                        printf("Id(%s)\n",current->var);
+                        if(strcmp(current->anot, "") == 0){
+                            printf("Id(%s)\n",current->var);
+                            //printf("%s - (%s)\n", current->nodeTypeName, current->var);
+                        }else{
+                            printf("Id(%s) - %s\n", current->var, current->anot);
+
+                        }
+
                     }
                     else if(current->nodeType == BOOLLIT_node)
                     {
@@ -170,7 +177,14 @@ void printTree(node* current, int level, int valorS)
                             printf("Assign - %s\n",current->anot);
                         }
                         else{
-                            printf("%s\n", current->nodeTypeName);
+
+                            if(strcmp(current->anot, "") == 0){
+                                printf("%s\n", current->nodeTypeName);
+                                //printf("%s - (%s)\n", current->nodeTypeName, current->var);
+                            }else{
+                                printf("%s - %s\n", current->nodeTypeName, current->anot);
+
+                            }
                         }
 
                     }
@@ -199,11 +213,7 @@ void printTree(node* current, int level, int valorS)
                 }
                 else
                 {
-                    /*if(strcmp(current->var, "") != 0){*/
-                        printf("%s - (%s)\n", current->nodeTypeName, current->var);
-                    /*}else{
                         printf("%s\n", current->nodeTypeName);
-                    }*/
                 }
             }
 

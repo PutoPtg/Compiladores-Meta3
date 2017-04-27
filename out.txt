@@ -1,14 +1,5 @@
-----------ID-TEST:int----------
-----------ID-TEST:int----------
-----------ID-TEST:void----------
-----------ID-TEST:int----------
-----------ID-TEST:int----------
-----------ID-TEST:int----------
-----------ID-TEST:int----------
-----------ID-TEST:int----------
-----------ID-TEST:int----------
-----------ID-TEST:int----------
-----------ID-TEST:int----------
+----------TEST:int----------
+----------TEST:int----------
 ===== Class gcd2 Symbol Table =====
 gcd		int
 main	(String[])	void
@@ -29,11 +20,11 @@ Program
 ..Id(gcd2)
 ..FieldDecl
 ....Int
-....Id(gcd)
+....Id(gcd) - int
 ..MethodDecl
 ....MethodHeader
 ......Void
-......Id(main)
+......Id(main) - void
 ......MethodParams
 ........ParamDecl
 ..........StringArray
@@ -53,28 +44,28 @@ Program
 ........Block
 ..........Assign - int
 ............Id(a)
-............ParseArgs
+............ParseArgs - int
 ..............Id(args)
 ..............DecLit(0) - int
 ..........Assign - int
 ............Id(b)
-............ParseArgs
+............ParseArgs - int
 ..............Id(args)
 ..............DecLit(1) - int
 ..........Assign - int
-............Id(gcd)
+............Id(gcd) - int
 ............Call
-..............Id(gcd)
+..............Id(gcd) - int
 ..............Id(a)
 ..............Id(b)
 ..........Print
-............Id(gcd)
+............Id(gcd) - int
 ........Print
 ..........StrLit("Error: two parameters required.") - String
 ..MethodDecl
 ....MethodHeader
 ......Int
-......Id(gcd)
+......Id(gcd) - int
 ......MethodParams
 ........ParamDecl
 ..........Int

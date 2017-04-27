@@ -438,8 +438,16 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                         for(j=0;j<atual->numSymbols;j++){
                         	if(strcmp(current->var,atual->symbols[j]->name)==0){
                         		strcpy(current->anot,atual->symbols[j]->type);
-                                printf("----------ID-TEST:%s----------\n", current->anot);
+                                //printf("----------ID-TEST:%s----------\n", current->anot);
                         	}
+                        }
+                    }
+                    else{
+                        if(current->nodeType == OTHER_node){
+                            if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
+                                strcpy(current->anot,"int");
+                                printf("----------TEST:%s----------\n", current->anot);
+                            }
                         }
                     }
                 }
@@ -447,12 +455,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
         }
     }
 
-    if(current->nodeType == OTHER_node){
-        if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
-            strcpy(current->anot,"int");
-            //printf("----------TEST:%s----------\n", current->anot);
-        }
-    }
+
 }
 void checkGlobalTable(node* current, table* tab){
     int i, j;
