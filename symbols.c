@@ -429,7 +429,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             strcpy(current->anot,"String[]");
         }
         else{
-            do{
+            do{                                                 //Faz a verificação competa nas tabela secundárias
                 for(j=0;j<atual->numSymbols;j++){ // Não GLOBAL
                     if(strcmp(current->var,atual->symbols[j]->name)==0){
                         strcpy(current->anot,atual->symbols[j]->type);
@@ -439,6 +439,14 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                 atual = holder->next;
             }while(atual != NULL);
             atual = tabela->next;
+
+            if(tabela->type == classTable){     //verifica na GLOBAL Table
+                for(j=0;j<tabela->numSymbols;j++){ 
+                    if(strcmp(current->var,tabela->symbols[j]->name)==0){      //Coloca anotação no filho do Call
+                        strcpy(current->anot,tabela->symbols[j]->type);
+                    }
+                }
+            }
         }
     }
     else if(current->nodeType == DECLIT_node){
@@ -456,28 +464,51 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             strcpy(current->anot,"int");
         }
         else if(strcmp(current->nodeTypeName, "Call") == 0){
+            if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
+                if(tabela->type == classTable){     //verifica na GLOBAL Table
+                    for(j=0;j<tabela->numSymbols;j++){ 
+                        if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){      //Coloca anotação no filho do Call
+                            strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
+                        }
+                    }
+                }
+            }
+
             for(j=0;j<tabela->numSymbols;j++){ //Não GLOBAL
                 if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){
                     strcpy(current->anot,cutType(tabela->symbols[j]->type));
                     break;
                 }
-            }
+            }      
         }
-        else if(strcmp(current->nodeTypeName, "VarDecl") == 0){     //Retira a anotação ao filho de VarDecl
+        /***************************************************
+        *Retira as anotações dos Id's que não queremos aqui*
+        ****************************************************/
+        else if(strcmp(current->nodeTypeName, "VarDecl") == 0 || strcmp(current->nodeTypeName, "ParamDecl") == 0 ||
+                strcmp(current->nodeTypeName, "FieldDecl") == 0 || strcmp(current->nodeTypeName, "MethodHeader") == 0){     
             if(strcmp(current->children[1]->nodeTypeName, "Id") == 0){
                 strcpy(current->children[1]->anot, "");
             }
         }
-        else if(strcmp(current->nodeTypeName, "ParamDecl") == 0){     //Retira a anotação ao filho de ParamDecl
-            if(strcmp(current->children[1]->nodeTypeName, "Id") == 0){
-                strcpy(current->children[1]->anot, "");
-            }
-        }
+      
         else{
             if(strcmp(current->nodeTypeName, "Assign") == 0){
                 strcpy(current->anot,"int");
+
+                if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
+                    if(tabela->type == classTable){     //verifica na GLOBAL Table
+                        for(j=0;j<tabela->numSymbols;j++){ 
+                            if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){      //Coloca anotação no filho do Call
+                                if(tabela->symbols[j]->isFunction == 0)                             // Verifica se não é uma função (tem que ser variável)
+                                    strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
+                            }
+                        }
+                    }
+                }
             }
-        } 
+        }
+
+
     }
 }
 

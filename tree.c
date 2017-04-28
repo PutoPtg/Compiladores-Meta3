@@ -124,12 +124,12 @@ void printTree(node* current, int level, int valorS)
                         strcmp(current->nodeTypeName, "Leq") == 0 || strcmp(current->nodeTypeName, "Lt") == 0 || strcmp(current->nodeTypeName, "Neq") == 0 ){
                         printf("%s - %s\n",current->nodeTypeName, current->anot);
                     }
-                    else if(strcmp(current->nodeTypeName,"Id")==0){
+                    /*else if(strcmp(current->nodeTypeName,"Id")==0){
                         if(strcmp(current->anot,"")==0){
                           strcpy(current->anot,"undef");
                         }
                         printf("Id(%s) - %s\n",current->var,current->anot);
-                    }
+                    }*/
                     else{
                         printf("%s - %s\n", current->nodeTypeName,current->anot);
                     }

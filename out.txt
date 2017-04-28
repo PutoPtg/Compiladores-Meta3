@@ -51,13 +51,13 @@ Program
 ..............Id(args) - String[]
 ..............DecLit(1) - int
 ..........Assign - int
-............Id(gcd)
+............Id(gcd) - int
 ............Call - int
-..............Id(gcd)
+..............Id(gcd) - (int,int)
 ..............Id(a) - int
 ..............Id(b) - int
 ..........Print
-............Id(gcd)
+............Id(gcd) - int
 ........Print
 ..........StrLit("Error: two parameters required.") - String
 ..MethodDecl
