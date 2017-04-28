@@ -402,7 +402,6 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
 		return;
 	}
 
-    //if(tabela->next != NULL){printf("%d\n", tabela->next->numSymbols);}
     if(tabela->next != NULL){atual = tabela->next;}
 
 	for(i=0; i<current->numChildren; i++){
@@ -422,6 +421,18 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
         if(strcmp(current->nodeTypeName, "Length") == 0){
             strcpy(current->anot,"int");
         }
+
+        // Trata das anotações de Sub, Add, Mul e Div
+        if(strcmp(current->nodeTypeName, "Sub") == 0 || strcmp(current->nodeTypeName, "Add") == 0 || strcmp(current->nodeTypeName, "Mul") == 0 || strcmp(current->nodeTypeName, "Div") == 0){
+            if(strcmp(current->children[0]->anot, current->children[1]->anot) == 0){        //No caso de serem operadores iguais
+                strcpy(current->anot, current->children[0]->anot);
+            }   
+            else if((strcmp(current->children[0]->anot, "int") == 0 && strcmp(current->children[1]->anot, "double") == 0) || // double - int || int - double
+                (strcmp(current->children[1]->anot, "int") == 0 && strcmp(current->children[0]->anot, "double") == 0)){
+                strcpy(current->anot, "double");
+            }
+        }
+
 
     }
     else if(current->nodeType == ID_node){
