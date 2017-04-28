@@ -408,83 +408,76 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
 	for(i=0; i<current->numChildren; i++){
         TreeAnt(current->children[i], level+1,tabela,atual);
     }
-    if(strcmp(current->nodeTypeName,"Id")==0){
-        //printf("ID TO SEARCH: %s\n", current->var);
-        do{
-            //printf("Searching Table:%s\n", atual->name);
-            for(j=0;j<atual->numSymbols;j++){ // Não GLOBAL
-        	if(strcmp(current->var,atual->symbols[j]->name)==0){
-        		strcpy(current->anot,atual->symbols[j]->type);
-        	}
+  
+    if(current->nodeType == EXP_node){
+        if(strcmp(current->nodeTypeName, "Eq") == 0 ||
+        strcmp(current->nodeTypeName, "Geq") == 0 ||
+        strcmp(current->nodeTypeName, "Gt") == 0 ||
+        strcmp(current->nodeTypeName, "Leq") == 0 ||
+        strcmp(current->nodeTypeName, "Lt") == 0 ||
+        strcmp(current->nodeTypeName, "Neq") == 0 )
+        {
+            strcpy(current->anot,"boolean");
         }
-        holder = atual;
-        atual = holder->next;
-    }while(atual != NULL);
-    atual = tabela->next;
+        if(strcmp(current->nodeTypeName, "Length") == 0){
+            strcpy(current->anot,"int");
+        }
 
     }
-    else{
-        if(strcmp(current->nodeTypeName,"Call")==0){
-            printf("CORTOU\n");
-      	    for(j=0;j<tabela->numSymbols;j++){ //Não GLOBAL
-        	    if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){
-        	        strcpy(current->anot,cutType(tabela->symbols[j]->type));
-        		    break;
-        	    }
+    else if(current->nodeType == ID_node){
+        if(strcmp(current->var, "args") == 0){
+            strcpy(current->anot,"String[]");
+        }
+        else{
+            do{
+                for(j=0;j<atual->numSymbols;j++){ // Não GLOBAL
+                    if(strcmp(current->var,atual->symbols[j]->name)==0){
+                        strcpy(current->anot,atual->symbols[j]->type);
+                    }
+                }
+                holder = atual;
+                atual = holder->next;
+            }while(atual != NULL);
+            atual = tabela->next;
+        }
+    }
+    else if(current->nodeType == DECLIT_node){
+        if(strcmp(current->nodeTypeName, "DecLit") == 0){
+            strcpy(current->anot,"int");
+        }
+    }
+    else if(current->nodeType == STRLIT_node){
+        if(strcmp(current->nodeTypeName, "Strlit") == 0){
+            strcpy(current->anot,"String");
+        }
+    }
+    else if(current->nodeType == OTHER_node){
+        if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
+            strcpy(current->anot,"int");
+        }
+        else if(strcmp(current->nodeTypeName, "Call") == 0){
+            for(j=0;j<tabela->numSymbols;j++){ //Não GLOBAL
+                if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){
+                    strcpy(current->anot,cutType(tabela->symbols[j]->type));
+                    break;
+                }
+            }
+        }
+        else if(strcmp(current->nodeTypeName, "VarDecl") == 0){     //Retira a anotação ao filho de VarDecl
+            if(strcmp(current->children[1]->nodeTypeName, "Id") == 0){
+                strcpy(current->children[1]->anot, "");
+            }
+        }
+        else if(strcmp(current->nodeTypeName, "ParamDecl") == 0){     //Retira a anotação ao filho de ParamDecl
+            if(strcmp(current->children[1]->nodeTypeName, "Id") == 0){
+                strcpy(current->children[1]->anot, "");
             }
         }
         else{
-	        if(current->nodeType == EXP_node){
-	            if(strcmp(current->nodeTypeName, "Eq") == 0 ||
-                strcmp(current->nodeTypeName, "Geq") == 0 ||
-                strcmp(current->nodeTypeName, "Gt") == 0 ||
-                strcmp(current->nodeTypeName, "Leq") == 0 ||
-                strcmp(current->nodeTypeName, "Lt") == 0 ||
-                strcmp(current->nodeTypeName, "Neq") == 0 )
-                {
-		            strcpy(current->anot,"boolean");
-		        }
-                if(strcmp(current->nodeTypeName, "Length") == 0){
-                    strcpy(current->anot,"int");
-                }
-	        }
-            else{
-                if(current->nodeType == DECLIT_node){
-                    if(strcmp(current->nodeTypeName, "DecLit") == 0){
-                        strcpy(current->anot,"int");
-                    }
-                }
-                else{
-                    if(current->nodeType == STRLIT_node){
-                        if(strcmp(current->nodeTypeName, "Strlit") == 0){
-                            strcpy(current->anot,"String");
-                        }
-                    }
-                    else{
-                        if(strcmp(current->nodeTypeName, "Assign") == 0){
-                            strcpy(current->anot,"int");
-                        }
-                        else{
-                            if(current->nodeType == OTHER_node){
-                                if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
-                                    strcpy(current->anot,"int");
-                                    //printf("----------TEST:%s----------\n", current->anot);
-                                }
-                            }
-                        }
-                    }
-                }
+            if(strcmp(current->nodeTypeName, "Assign") == 0){
+                strcpy(current->anot,"int");
             }
-        }
-    }
-    if(strcmp(current->nodeTypeName,"Call")==0){
-        printf("CORTOU2\n");
-        for(j=0;j<tabela->numSymbols;j++){ //Não GLOBAL
-            if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){
-                strcpy(current->anot,cutType(tabela->symbols[j]->type));
-                break;
-            }
-        }
+        } 
     }
 }
 

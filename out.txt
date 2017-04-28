@@ -1,5 +1,3 @@
-CORTOU
-CORTOU2
 ===== Class gcd2 Symbol Table =====
 gcd		int
 main	(String[])	void
@@ -28,14 +26,14 @@ Program
 ......MethodParams
 ........ParamDecl
 ..........StringArray
-..........Id(args) - String[]
+..........Id(args)
 ....MethodBody
 ......VarDecl
 ........Int
-........Id(a) - int
+........Id(a)
 ......VarDecl
 ........Int
-........Id(b) - int
+........Id(b)
 ......If
 ........Geq - boolean
 ..........Length - int
@@ -69,10 +67,10 @@ Program
 ......MethodParams
 ........ParamDecl
 ..........Int
-..........Id(a) - int
+..........Id(a)
 ........ParamDecl
 ..........Int
-..........Id(b) - int
+..........Id(b)
 ....MethodBody
 ......If
 ........Eq - boolean
