@@ -1,5 +1,5 @@
-----------TEST:int----------
-----------TEST:int----------
+CORTOU
+CORTOU2
 ===== Class gcd2 Symbol Table =====
 gcd		int
 main	(String[])	void
@@ -20,84 +20,84 @@ Program
 ..Id(gcd2)
 ..FieldDecl
 ....Int
-....Id(gcd) - int
+....Id(gcd)
 ..MethodDecl
 ....MethodHeader
 ......Void
-......Id(main) - void
+......Id(main)
 ......MethodParams
 ........ParamDecl
 ..........StringArray
-..........Id(args)
+..........Id(args) - String[]
 ....MethodBody
 ......VarDecl
 ........Int
-........Id(a)
+........Id(a) - int
 ......VarDecl
 ........Int
-........Id(b)
+........Id(b) - int
 ......If
 ........Geq - boolean
 ..........Length - int
-............Id(args)
+............Id(args) - String[]
 ..........DecLit(2) - int
 ........Block
 ..........Assign - int
-............Id(a)
+............Id(a) - int
 ............ParseArgs - int
-..............Id(args)
+..............Id(args) - String[]
 ..............DecLit(0) - int
 ..........Assign - int
-............Id(b)
+............Id(b) - int
 ............ParseArgs - int
-..............Id(args)
+..............Id(args) - String[]
 ..............DecLit(1) - int
 ..........Assign - int
-............Id(gcd) - int
-............Call
-..............Id(gcd) - int
-..............Id(a)
-..............Id(b)
+............Id(gcd)
+............Call - int
+..............Id(gcd)
+..............Id(a) - int
+..............Id(b) - int
 ..........Print
-............Id(gcd) - int
+............Id(gcd)
 ........Print
 ..........StrLit("Error: two parameters required.") - String
 ..MethodDecl
 ....MethodHeader
 ......Int
-......Id(gcd) - int
+......Id(gcd)
 ......MethodParams
 ........ParamDecl
 ..........Int
-..........Id(a)
+..........Id(a) - int
 ........ParamDecl
 ..........Int
-..........Id(b)
+..........Id(b) - int
 ....MethodBody
 ......If
 ........Eq - boolean
-..........Id(a)
+..........Id(a) - int
 ..........DecLit(0) - int
 ........Return
-..........Id(b)
+..........Id(b) - int
 ........Block
 ..........While
 ............Gt - boolean
-..............Id(b)
+..............Id(b) - int
 ..............DecLit(0) - int
 ............If
 ..............Gt - boolean
-................Id(a)
-................Id(b)
+................Id(a) - int
+................Id(b) - int
 ..............Assign - int
-................Id(a)
+................Id(a) - int
 ................Sub - 
-..................Id(a)
-..................Id(b)
+..................Id(a) - int
+..................Id(b) - int
 ..............Assign - int
-................Id(b)
+................Id(b) - int
 ................Sub - 
-..................Id(b)
-..................Id(a)
+..................Id(b) - int
+..................Id(a) - int
 ..........Return
-............Id(a)
+............Id(a) - int

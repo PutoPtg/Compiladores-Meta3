@@ -4,7 +4,7 @@
 *Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática
 *Manuel Madeira Amado - 2006131282
 *Xavier Silva - 2013153577
-*Versão 0.08
+*Versão 0.09
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -149,9 +149,10 @@ void printTree(node* current, int level, int valorS)
                         if(strcmp(current->anot, "") == 0){
                             printf("Id(%s)\n",current->var);
                             //printf("%s - (%s)\n", current->nodeTypeName, current->var);
+                            //printf("ID Mot* F*r\n");
                         }else{
                             printf("Id(%s) - %s\n", current->var, current->anot);
-
+                            //printf("ID Mot* F*r\n");
                         }
 
                     }
@@ -183,7 +184,6 @@ void printTree(node* current, int level, int valorS)
                                 //printf("%s - (%s)\n", current->nodeTypeName, current->var);
                             }else{
                                 printf("%s - %s\n", current->nodeTypeName, current->anot);
-
                             }
                         }
 
