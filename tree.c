@@ -125,9 +125,9 @@ void printTree(node* current, int level, int valorS)
                         printf("%s - %s\n",current->nodeTypeName, current->anot);
                     }
                     else if(strcmp(current->nodeTypeName,"Id")==0){
-                        if(strcmp(current->anot,"")==0){
+                        /*if(strcmp(current->anot,"")==0){
                           strcpy(current->anot,"undef");
-                        }
+                        }*/
                         printf("Id(%s) - %s\n",current->var,current->anot);
                     }
                     else{
