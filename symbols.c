@@ -125,6 +125,9 @@ void printSymbol(symbol* sym)
 }
 
 
+
+
+
 /*******************************************************************************
 * Elimina as tabelas                                                    *
 *******************************************************************************/
@@ -396,7 +399,7 @@ int lengthEscape(char* string){
 *******************************************************************************/
 void TreeAnt(node* current, int level, table* tabela, table* atual){
 	int i, j;
-    int isGlobal=0;
+    
     table* holder = NULL; //holds the key from a table
 	if(current == NULL){
 		return;
