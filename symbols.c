@@ -18,6 +18,7 @@
 #define VAR3 (char*)calloc(1,sizeof(char))
 
 int numFunc = 0;
+char actualMethod[256];
 
 /*******************************************************************************
 * Cria a tabela de símbolos                                                    *
@@ -399,44 +400,17 @@ int lengthEscape(char* string){
 *******************************************************************************/
 void TreeAnt(node* current, int level, table* tabela, table* atual){
 	int i, j;
-
-    table* holder = NULL; //holds the key from a table
+    int isGlobal=0;
+    
 	if(current == NULL){
 		return;
 	}
 
-    //esta linha causa problemas...
-    //if(strcmp(current->nodeTypeName, "MethodBody") == 0){
-        //printf("Tabela Local:%s\n",atual->name);
-        //se entrou num método novo
-    //    if(atual->next != NULL){atual = atual->next;}
-    //}
-
-
-    if(strcmp(current->nodeTypeName,"MethodHeader")==0){
-    		atual = tabela;
-
-                printf("%s\n", current->children[1]->var);
-                do{
-                    if(strstr(atual->name, current->children[1]->var) == NULL) {
-                        if(atual->next != NULL){atual = atual->next;}
-                    }
-                }while(atual->next!=NULL);
-
-    		/*while(strcmp(atual->name,current->children[2]->var)!=0){
-    			atual = atual->next;
-    		}*/
-    	}
-        printf("Actual:%s\n", atual->name);
 
 	for(i=0; i<current->numChildren; i++){
         TreeAnt(current->children[i], level+1,tabela,atual);
     }
 
-    //printf("level:%d\n", level);
-    //printf("Nó:%s\n", current->nodeTypeName);
-    //printf("Tabela Total:%s\n",tabela->name);
-    //printf("Tabela Local:%s\n",atual->name);
 
 
     if(current->nodeType == EXP_node){
@@ -471,24 +445,43 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             strcpy(current->anot,"String[]");
         }
         else{
-            //do{                                                 //Faz a verificação competa nas tabela secundárias
-                for(j=0;j<atual->numSymbols;j++){ // Não GLOBAL
-                    if(strcmp(current->var,atual->symbols[j]->name)==0){
-                        strcpy(current->anot,atual->symbols[j]->type);
-                    }
-                }
-                //holder = atual;
-                //atual = holder->next;
-            //}while(atual != NULL);
-            //atual = tabela->next;
 
-            if(tabela->type == classTable){     //verifica na GLOBAL Table
-                for(j=0;j<tabela->numSymbols;j++){
-                    if(strcmp(current->var,tabela->symbols[j]->name)==0){      //Coloca anotação no filho do Call
-                        strcpy(current->anot,tabela->symbols[j]->type);
-                    }
+
+            if(strcmp(current->parent->nodeTypeName, "MethodHeader") == 0){
+                strcpy(actualMethod, current->var);
+            }
+     
+
+            //Primeiro vai buscar à CLASS - atual fica com esta tabela
+            isGlobal=0;
+            for(j=0;j<atual->numSymbols;j++){ 
+                if(strcmp(current->var,atual->symbols[j]->name)==0){
+                    strcpy(current->anot,atual->symbols[j]->type);
+                    isGlobal=1;
                 }
             }
+
+            // Se não estiver na Class
+            if(isGlobal==0){
+                while(atual != NULL){
+                    //printf("ATUAL_METHOD: %s\n", actualMethod);
+                    //printf("CUT: %s\n", cutType(atual->name));
+                    if(strcmp(cutType(atual->name), actualMethod) == 0){
+                        for(j=0;j<atual->numSymbols;j++){ 
+                            if(strcmp(current->var,atual->symbols[j]->name)==0){
+                                strcpy(current->anot,atual->symbols[j]->type);
+                            isGlobal=1;
+                            }
+                        }
+                    }
+                    atual = atual->next;
+                } 
+            }
+            
+
+            atual = tabela;
+
+    
         }
     }
     else if(current->nodeType == DECLIT_node){
@@ -512,6 +505,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
         }
     }
     else if(current->nodeType == OTHER_node){
+
         if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
             strcpy(current->anot,"int");
         }
@@ -524,14 +518,10 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                         }
                     }
                 }
+
             }
 
-            for(j=0;j<tabela->numSymbols;j++){ //Não GLOBAL
-                if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){
-                    strcpy(current->anot,cutType(tabela->symbols[j]->type));
-                    break;
-                }
-            }
+        
         }
         /***************************************************
         *Retira as anotações dos Id's que não queremos aqui*
@@ -542,20 +532,20 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                 strcpy(current->children[1]->anot, "");
             }
         }
-
         else{
             if(strcmp(current->nodeTypeName, "Assign") == 0){
                 strcpy(current->anot,"int");
 
                 if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
-                    if(tabela->type == classTable){     //verifica na GLOBAL Table
+                    /*if(tabela->type == classTable){     //verifica na GLOBAL Table
                         for(j=0;j<tabela->numSymbols;j++){
                             if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){      //Coloca anotação no filho do Call
                                 if(tabela->symbols[j]->isFunction == 0)                             // Verifica se não é uma função (tem que ser variável)
                                     strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
                             }
                         }
-                    }
+                    }*/
+                    strcpy(current->anot, current->children[0]->anot);
                 }
             }
         }
