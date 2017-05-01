@@ -35,31 +35,31 @@ Program
 ........Int
 ........Id(b)
 ......If
-........Geq - 
-..........Length - 
-............Id(args)
-..........DecLit(2) - 
+........Geq - boolean
+..........Length - int
+............Id(args) - String[]
+..........DecLit(2) - int
 ........Block
-..........Assign - 
-............Id(a)
-............ParseArgs
-..............Id(args)
-..............DecLit(0) - 
-..........Assign - 
-............Id(b)
-............ParseArgs
-..............Id(args)
-..............DecLit(1) - 
-..........Assign - 
-............Id(gcd)
-............Call
-..............Id(gcd)
-..............Id(a)
-..............Id(b)
+..........Assign - int
+............Id(a) - int
+............ParseArgs - int
+..............Id(args) - String[]
+..............DecLit(0) - int
+..........Assign - int
+............Id(b) - int
+............ParseArgs - int
+..............Id(args) - String[]
+..............DecLit(1) - int
+..........Assign - int
+............Id(gcd) - int
+............Call - int
+..............Id(gcd) - (int,int)
+..............Id(a) - int
+..............Id(b) - int
 ..........Print
-............Id(gcd)
+............Id(gcd) - int
 ........Print
-..........StrLit("Error: two parameters required.") - 
+..........StrLit("Error: two parameters required.") - String
 ..MethodDecl
 ....MethodHeader
 ......Int
@@ -73,29 +73,29 @@ Program
 ..........Id(b)
 ....MethodBody
 ......If
-........Eq - 
-..........Id(a)
-..........DecLit(0) - 
+........Eq - boolean
+..........Id(a) - int
+..........DecLit(0) - int
 ........Return
-..........Id(b)
+..........Id(b) - int
 ........Block
 ..........While
-............Gt - 
-..............Id(b)
-..............DecLit(0) - 
+............Gt - boolean
+..............Id(b) - int
+..............DecLit(0) - int
 ............If
-..............Gt - 
-................Id(a)
-................Id(b)
-..............Assign - 
-................Id(a)
-................Sub - 
-..................Id(a)
-..................Id(b)
-..............Assign - 
-................Id(b)
-................Sub - 
-..................Id(b)
-..................Id(a)
+..............Gt - boolean
+................Id(a) - int
+................Id(b) - int
+..............Assign - int
+................Id(a) - int
+................Sub - int
+..................Id(a) - int
+..................Id(b) - int
+..............Assign - int
+................Id(b) - int
+................Sub - int
+..................Id(b) - int
+..................Id(a) - int
 ..........Return
-............Id(a)
+............Id(a) - int
