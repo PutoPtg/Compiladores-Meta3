@@ -155,7 +155,9 @@ void printTree(node* current, int level, int valorS)
                     }
                     else if(current->nodeType == BOOLLIT_node)
                     {
-                        printf("BoolLit(%s)\n", current->var);
+                        if(strcmp(current->nodeTypeName,"BoolLit")==0){
+                            printf("BoolLit(%s) - %s\n", current->var,current->anot);
+                        }
                     }
                     else if(current->nodeType == DECLIT_node)
                     {
@@ -167,7 +169,9 @@ void printTree(node* current, int level, int valorS)
                     }
                     else if(current->nodeType == REALLIT_node)
                     {
-                        printf("RealLit(%s)\n", current->var);
+                        if(strcmp(current->nodeTypeName,"RealLit")==0){
+                            printf("RealLit(%s) - %s\n", current->var,current->anot);
+                        }
                     }
                     else
                     {

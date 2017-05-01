@@ -473,6 +473,16 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             strcpy(current->anot,"String");
         }
     }
+    else if(current->nodeType == REALLIT_node){
+        if(strcmp(current->nodeTypeName, "RealLit") == 0){
+            strcpy(current->anot,"double");
+        }
+    }
+    else if(current->nodeType == BOOLLIT_node){
+        if(strcmp(current->nodeTypeName, "BoolLit") == 0){
+            strcpy(current->anot,"boolean");
+        }
+    }
     else if(current->nodeType == OTHER_node){
         if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
             strcpy(current->anot,"int");
