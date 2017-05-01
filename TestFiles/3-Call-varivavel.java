@@ -8,7 +8,7 @@ class blondie2 {
 		boolean chamada;
 		int inteiro;
 		resposta = chamada;
-		inteiro = callme(global, chamada);
+		inteiro = callme(inteiro, chamada);
 		return 1;
 	}
 

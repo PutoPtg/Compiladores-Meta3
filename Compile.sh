@@ -1,5 +1,5 @@
 # usar a variável seginte para colocar um ficheiro em default
-in=TestFiles/3-Call-varivavel.java #default de entrada
+in=TestFiles/gcd2.ja #default de entrada
 out=out.txt #default de saída
 
 #Script de Compilação
