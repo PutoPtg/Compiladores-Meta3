@@ -179,7 +179,6 @@ void printTree(node* current, int level, int valorS)
                             printf("Assign - %s\n",current->anot);
                         }
                         else{
-
                             if(strcmp(current->anot, "") == 0){
                                 printf("%s\n", current->nodeTypeName);
                             }else{

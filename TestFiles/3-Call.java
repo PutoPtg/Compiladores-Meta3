@@ -4,21 +4,37 @@
 class blondie {
 
 	public static int global;
+	public static int callme;
+
+	public static boolean callme (double inteiro, boolean booleano){
+		global = inteiro;
+		return booleano;
+	}
+
+	public static boolean callme (double inteiro, boolean booleano){
+		global = inteiro;
+		return booleano;
+	}
+
 
 	public static int  main (String[] args){
 		boolean resposta;
 		boolean chamada;
-		resposta = callme(global, chamada);
+		resposta = callme(1, chamada);
+		chamada = callme();
 		return 1;
 	}
 
-	public static boolean callme (int inteiro, boolean booleano){
+	
+
+	public static boolean callme (){
 		global = inteiro;
 		return booleano;
 	}
 
-	public static boolean callme (int inteiro){
+	public static boolean callme (){
 		global = inteiro;
 		return booleano;
 	}
+
 }
