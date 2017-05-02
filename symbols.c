@@ -334,7 +334,7 @@ int countPointer(char* type){
 	int i;
 	int contador = 0;
 	for(i=0;i<strlen(type);i++){
-		if(type[i]=='*'){
+		if(type[i]==','){
 			contador++;
 		}
 	}
@@ -427,6 +427,11 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             strcpy(current->anot,"int");
         }
 
+        if(strcmp(current->nodeTypeName, "Not") == 0){
+            strcpy(current->anot,"boolean");
+        }
+
+
         // Trata das anotações de Sub, Add, Mul e Div
         if(strcmp(current->nodeTypeName, "Sub") == 0 || strcmp(current->nodeTypeName, "Add") == 0 || strcmp(current->nodeTypeName, "Mul") == 0 || strcmp(current->nodeTypeName, "Div") == 0){
             if(strcmp(current->children[0]->anot, current->children[1]->anot) == 0){        //No caso de serem operadores iguais
@@ -510,11 +515,16 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             strcpy(current->anot,"int");
         }
         else if(strcmp(current->nodeTypeName, "Call") == 0){
+            int numParams = current->numChildren - 1;
+
             if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
                 if(tabela->type == classTable){     //verifica na GLOBAL Table
                     for(j=0;j<tabela->numSymbols;j++){
                         if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){      //Coloca anotação no filho do Call
-                            strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
+                            if(countPointer(tabela->symbols[j]->paramTypes) == numParams-1){
+                                strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
+                            }
+                            
                         }
                     }
                 }
@@ -537,14 +547,6 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                 strcpy(current->anot,"int");
 
                 if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
-                    /*if(tabela->type == classTable){     //verifica na GLOBAL Table
-                        for(j=0;j<tabela->numSymbols;j++){
-                            if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){      //Coloca anotação no filho do Call
-                                if(tabela->symbols[j]->isFunction == 0)                             // Verifica se não é uma função (tem que ser variável)
-                                    strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
-                            }
-                        }
-                    }*/
                     strcpy(current->anot, current->children[0]->anot);
                 }
             }
