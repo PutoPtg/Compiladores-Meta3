@@ -125,10 +125,6 @@ void printSymbol(symbol* sym)
     printf("\n");
 }
 
-
-
-
-
 /*******************************************************************************
 * Elimina as tabelas                                                    *
 *******************************************************************************/
@@ -396,91 +392,107 @@ int lengthEscape(char* string){
 }
 
 /*******************************************************************************
-* Cria Árvore Anotada                                                          *
+* Cria Árvore Anotada RECURSIVAMENTE                                           *
 *******************************************************************************/
 void TreeAnt(node* current, int level, table* tabela, table* atual){
-	int i, j, k;
-    int isGlobal=0;
+	int i;
+    //int j, k;
+    //int isGlobal=0;
 
-    table* auxTable2 = tabela;
-    table* auxTable3 = tabela;
-    
+    //table* auxTable2 = tabela;
+    //table* auxTable3 = tabela;
+
+/*--Condição de Paragem (Folha)-----------------------------------------------*/
 	if(current == NULL){
 		return;
 	}
 
+/*--Chamada Recursiva---------------------------------------------------------*/
 	for(i=0; i<current->numChildren; i++){
         TreeAnt(current->children[i], level+1,tabela,atual);
     }
 
-   
+ /*--EXP_node------------------------------------------------------------------*/
+ /*..Eq..Geq..Gt..Leq..Lt..Neq..And..Or........................................*/
     if(current->nodeType == EXP_node){
-        if(strcmp(current->nodeTypeName, "Eq") == 0 ||
-        strcmp(current->nodeTypeName, "Geq") == 0 ||
-        strcmp(current->nodeTypeName, "Gt") == 0 ||
-        strcmp(current->nodeTypeName, "Leq") == 0 ||
-        strcmp(current->nodeTypeName, "Lt") == 0 ||
-        strcmp(current->nodeTypeName, "Neq") == 0 ||
-        strcmp(current->nodeTypeName, "And") == 0 ||
-        strcmp(current->nodeTypeName, "Or") == 0
-        )
+        if( strcmp(current->nodeTypeName, "Eq") == 0 ||
+            strcmp(current->nodeTypeName, "Geq") == 0 ||
+            strcmp(current->nodeTypeName, "Gt") == 0 ||
+            strcmp(current->nodeTypeName, "Leq") == 0 ||
+            strcmp(current->nodeTypeName, "Lt") == 0 ||
+            strcmp(current->nodeTypeName, "Neq") == 0 ||
+            strcmp(current->nodeTypeName, "And") == 0 ||
+            strcmp(current->nodeTypeName, "Or") == 0)
         {
             strcpy(current->anot,"boolean");
         }
+/*..Length.....................................................................*/
         if(strcmp(current->nodeTypeName, "Length") == 0){
             strcpy(current->anot,"int");
         }
-
+/*..Not........................................................................*/
         if(strcmp(current->nodeTypeName, "Not") == 0){
-            if(strcmp(current->children[0]->anot, "int") == 0 || strcmp(current->children[0]->anot, "double") == 0){
+            if( strcmp(current->children[0]->anot, "int") == 0 ||
+                strcmp(current->children[0]->anot, "double") == 0)
+            {
                 strcpy(current->anot, "undef");
-            }
-            else{
+            }else{
                 strcpy(current->anot,"boolean");
             }
-            
         }
-
-        if(strcmp(current->nodeTypeName, "Minus") == 0 || strcmp(current->nodeTypeName, "Plus") == 0){
+/*..Minus..Plus................................................................*/
+        if( strcmp(current->nodeTypeName, "Minus") == 0 ||
+            strcmp(current->nodeTypeName, "Plus") == 0)
+        {
             strcpy(current->anot, current->children[0]->anot);
         }
-
-
-        // Trata das anotações de Sub, Add, Mul, Div e Mod
-        if(strcmp(current->nodeTypeName, "Sub") == 0 || strcmp(current->nodeTypeName, "Add") == 0 || strcmp(current->nodeTypeName, "Mul") == 0 || strcmp(current->nodeTypeName, "Div") == 0 || strcmp(current->nodeTypeName, "Mod") == 0){
-            if(strcmp(current->children[0]->anot, current->children[1]->anot) == 0 ){        //No caso de serem operadores iguais
+/*..Sub..Add..Mul..Div..Mod....................................................*/
+        if( strcmp(current->nodeTypeName, "Sub") == 0 ||
+            strcmp(current->nodeTypeName, "Add") == 0 ||
+            strcmp(current->nodeTypeName, "Mul") == 0 ||
+            strcmp(current->nodeTypeName, "Div") == 0 ||
+            strcmp(current->nodeTypeName, "Mod") == 0)
+        {
+            //No caso de serem operadores iguais
+            if(strcmp(current->children[0]->anot, current->children[1]->anot) == 0 ){
                 strcpy(current->anot, current->children[0]->anot);
+            }else{
+            // double - int || int - double
+                if((strcmp(current->children[0]->anot, "int") == 0 &&
+                    strcmp(current->children[1]->anot, "double") == 0) ||
+                    (strcmp(current->children[1]->anot, "int") == 0 &&
+                    strcmp(current->children[0]->anot, "double") == 0))
+                {
+                    strcpy(current->anot, "double");
+                }else{
+            //um dos operadores é indefinido
+                    if(strcmp(current->children[0]->anot, "undef") == 0 ||
+                        strcmp(current->children[1]->anot, "undef") == 0)
+                    {
+                        strcpy(current->anot, "undef");
+                    }
+                }
             }
-            else if((strcmp(current->children[0]->anot, "int") == 0 && strcmp(current->children[1]->anot, "double") == 0) || // double - int || int - double
-                (strcmp(current->children[1]->anot, "int") == 0 && strcmp(current->children[0]->anot, "double") == 0)){
-                strcpy(current->anot, "double");
-            }
-            else if(strcmp(current->children[0]->anot, "undef") == 0 || strcmp(current->children[1]->anot, "undef") == 0){
-                strcpy(current->anot, "undef");
-            }
-
         }
-
-
-    }
+    }/*
     else if(current->nodeType == ID_node){
         if(strcmp(current->var, "args") == 0){
             strcpy(current->anot,"String[]");
         }
         else{
             int localAndGlobal = 0;
-            
+
 
             if(strcmp(current->parent->nodeTypeName, "MethodHeader") == 0){
                 strcpy(actualMethod, current->var);
             }
-     
+
             // Primeiro vai à tabela local
             isGlobal=0;
             atual = atual->next;
             while(atual != NULL){
                 if(strcmp(cutType(atual->name), actualMethod) == 0){
-                    for(j=0;j<atual->numSymbols;j++){ 
+                    for(j=0;j<atual->numSymbols;j++){
                         if(strcmp(current->var,atual->symbols[j]->name)==0){
                             strcpy(current->anot,atual->symbols[j]->type);
                             isGlobal=1;
@@ -489,11 +501,11 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                     }
                 }
                 atual = atual->next;
-            } 
+            }
 
             if(isGlobal == 0){
                 if(auxTable2->type == classTable){
-                    for(j=0;j<auxTable2->numSymbols;j++){ 
+                    for(j=0;j<auxTable2->numSymbols;j++){
                         if(strcmp(current->var,auxTable2->symbols[j]->name)==0){
                             strcpy(current->anot,auxTable2->symbols[j]->type);
                             isGlobal=1;
@@ -537,7 +549,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             int contaMetodoVazio = 0;
 
 
-           
+
             if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
                 if(tabela->type == classTable){     //verifica na GLOBAL Table
                     for(j=0;j<tabela->numSymbols;j++){
@@ -546,7 +558,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                                 strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
                                 contaMetodo++;
                                 strcpy(current->anot, tabela->symbols[j]->type);
-                            } 
+                            }
                             if(countPointer(tabela->symbols[j]->paramTypes) == 0 && numParams-1== -1){
                                 contaMetodoVazio++;
                                 strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
@@ -564,9 +576,9 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             }
 
         }
-        /***************************************************
+        ***************************************************
         *Retira as anotações dos Id's que não queremos aqui*
-        ****************************************************/
+        ****************************************************
         else if(strcmp(current->nodeTypeName, "VarDecl") == 0 || strcmp(current->nodeTypeName, "ParamDecl") == 0 ||
                 strcmp(current->nodeTypeName, "FieldDecl") == 0 || strcmp(current->nodeTypeName, "MethodHeader") == 0){
             if(strcmp(current->children[1]->nodeTypeName, "Id") == 0){
@@ -580,8 +592,8 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             	int assignPos = 0;
             	int vardeclPos = 0;
 
-              
-            	//Verifica as posições do assign e vardecl para ver se aparece antes ou depois 
+
+            	//Verifica as posições do assign e vardecl para ver se aparece antes ou depois
             	//É escolhida a global ou local table conforme
                 if(strcmp(current->parent->nodeTypeName, "MethodBody") == 0){
                 	strcpy(nomeId, current->children[0]->var);
@@ -597,7 +609,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
 
                 if(assignPos < vardeclPos){
                 	//Global
-                	for(k=0;k<auxTable2->numSymbols;k++){ 
+                	for(k=0;k<auxTable2->numSymbols;k++){
                         if(strcmp(current->children[0]->var,auxTable2->symbols[k]->name)==0){
                             strcpy(current->children[0]->anot,auxTable2->symbols[k]->type);
                         }
@@ -608,7 +620,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                 	auxTable3 = auxTable3->next;
 		            while(auxTable3 != NULL){
 		                if(strcmp(cutType(auxTable3->name), actualMethod) == 0){
-		                    for(k=0;k<auxTable3->numSymbols;k++){ 
+		                    for(k=0;k<auxTable3->numSymbols;k++){
 		                        if(strcmp(current->children[0]->var,auxTable3->symbols[k]->name)==0){
 		                            strcpy(current->children[0]->anot,auxTable3->symbols[k]->type);
 		                        }
@@ -624,7 +636,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                 }
             }
         }
-    }
+    }*/
 }
 
 void checkGlobalTable(node* current, table* tab){

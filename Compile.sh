@@ -5,7 +5,7 @@ out=out.txt #default de saída
 #Script de Compilação
 lex jac.l
 yacc -d -v jac.y
-gcc -g -o jac y.tab.c lex.yy.c tree.c symbols.c -ll -ly
+gcc -Wall -g -o jac y.tab.c lex.yy.c tree.c symbols.c -ll -ly
 
 tf=${1-$in} #Caso tenha um ficheiro a seguir executa esse, senão usa o default
 
