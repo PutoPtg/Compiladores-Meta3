@@ -1,4 +1,4 @@
-/*teste de operadores*/
+/*teste de operadores - 2*/
 
 
 class somamisso {
@@ -9,10 +9,10 @@ class somamisso {
 	public static int  main (String[] args){
 		double resultado;
 		resultado = 0;
-		resultado = ((1 + 2.0 + 3) / 3)*5;
+		resultado = (((1 + 2 + 3) / 3.1)*5)%10;
 		global1 = 10;
-		global2 = 10000000000000.0;
-		resultado = global2/(global1+resultado);
+		global2 = 1000000.0000000;
+		resultado = -global2/(!global1+resultado);
 		return resultado;
 	}
 
