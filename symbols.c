@@ -409,13 +409,11 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
 		return;
 	}
 
-
 	for(i=0; i<current->numChildren; i++){
         TreeAnt(current->children[i], level+1,tabela,atual);
     }
 
-
-
+   
     if(current->nodeType == EXP_node){
         if(strcmp(current->nodeTypeName, "Eq") == 0 ||
         strcmp(current->nodeTypeName, "Geq") == 0 ||
@@ -533,37 +531,38 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             strcpy(current->children[0]->anot, "String[]");
         }
         else if(strcmp(current->nodeTypeName, "Call") == 0){
+        	strcpy(current->anot, "this");
             int numParams = current->numChildren - 1;
             int contaMetodo = 0;
             int contaMetodoVazio = 0;
 
+
+           
             if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
                 if(tabela->type == classTable){     //verifica na GLOBAL Table
                     for(j=0;j<tabela->numSymbols;j++){
-                        if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0){      //Coloca anotação no filho do Call
-                            if(countPointer(tabela->symbols[j]->paramTypes) == numParams-1){
+                        if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0 && tabela->symbols[j]->isFunction == 1){      //Coloca anotação no filho do Call
+                            if(countPointer(tabela->symbols[j]->paramTypes)+1 == numParams ){
                                 strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
                                 contaMetodo++;
                                 strcpy(current->anot, tabela->symbols[j]->type);
                             } 
-                            if(countPointer(tabela->symbols[j]->paramTypes) == 0 && numParams-1 == -1){
+                            if(countPointer(tabela->symbols[j]->paramTypes) == 0 && numParams-1== -1){
                                 contaMetodoVazio++;
                                 strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
                                 strcpy(current->anot, tabela->symbols[j]->type);
                             }
-
-                        }
+                      	}
                     }
                 }
             }
 
             // Quando o Call não tem anotação coloca UNDEF nele e no filho
-            if(strcmp(current->anot, "") == 0 || contaMetodo >= 2 || contaMetodoVazio >= 2){
+            if(strcmp(current->anot, "") == 0 || contaMetodo >= 2 || contaMetodoVazio >=2){
                 strcpy(current->anot, "undef");
                 strcpy(current->children[0]->anot,"undef");
             }
 
-        
         }
         /***************************************************
         *Retira as anotações dos Id's que não queremos aqui*
@@ -625,8 +624,6 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                 }
             }
         }
-
-
     }
 }
 

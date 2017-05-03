@@ -17,6 +17,7 @@ class blondie {
 	}
 
 
+
 	public static int  main (String[] args){
 		boolean resposta;
 		boolean chamada;
@@ -29,12 +30,24 @@ class blondie {
 
 	public static boolean callme (){
 		global = inteiro;
+		global = b0();
+		global = b0(a,b);
+		global = b0(a,b,c);
+		global = b0(a,b,1,d);
+		b0();
+		global = b + b0(a,b,1,d);
+
 		return booleano;
 	}
 
-	public static boolean callme (){
-		global = inteiro;
-		return booleano;
-	}
+
+
+
+	public static int b0(){}
+
+	public static int b0(int a, int b){}
+
+	public static int b0(int a, int b, int c, int d){}
+
 
 }
