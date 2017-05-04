@@ -175,13 +175,22 @@ void printTree(node* current, int level, int valorS){
 /*--ID_node-------------------------------------------------------------------*/
                             else{
                                 if(current->nodeType == ID_node){
-            	                    if(strcmp(current->anot, "") == 0){
+                                	if(strcmp(current->parent->nodeTypeName, "VarDecl") == 0 || strcmp(current->parent->nodeTypeName, "ParamDecl") == 0 ||
+        								strcmp(current->parent->nodeTypeName, "FieldDecl") == 0 || strcmp(current->parent->nodeTypeName, "MethodHeader") == 0 ||
+        								strcmp(current->parent->nodeTypeName, "Program") == 0){
+                                		printf("Id(%s)\n",current->var);
+                                	}
+                                	else{
+                                		 printf("Id(%s) - %s\n", current->var, current->anot);
+                                	}
+
+            	                    /*if(strcmp(current->anot, "") == 0){
                                         //printf("VAZIO");
                                         printf("Id(%s)\n",current->var);
                                     }else{
                                         printf("Id(%s) - %s\n", current->var, current->anot);
                                         //printf("ANOTADO");
-                                    }
+                                    }*/
                                 }
 /*--OTHER_node----------------------------------------------------------------*/
                                 else{
