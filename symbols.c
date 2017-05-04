@@ -456,6 +456,9 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                     }
                 }
             }
+            if(strcmp(current->anot, "") == 0 && strcmp(cutType(tabela->name),current->var)){
+                strcpy(current->anot, "undef");
+            }
         }
 
  /*--EXP_node------------------------------------------------------------------*/
@@ -558,7 +561,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                             }else{
 /*--Call----------------------------------------------------------------------*/
                                 if(strcmp(current->nodeTypeName, "Call") == 0){
-                                    strcpy(current->anot, "this");
+                                    strcpy(current->anot, "");
                                     int numParams = current->numChildren - 1;
                                     int contaMetodo = 0;
                                     int contaMetodoVazio = 0;

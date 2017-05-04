@@ -21,6 +21,7 @@ class blondie {
 
 	public static boolean callme (int inteiro){
 		global = inteiro;
+		callnobody(z, x, g);
 		return booleano;
 	}
 }

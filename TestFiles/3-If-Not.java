@@ -7,6 +7,9 @@ class ifonly {
 		int b;
 		a = 0;
 		b = 1;
+		boolean isnot;
+		isnot = true;
+		isnot = !isnot;
 		if(!a!=b){
 			return 1;
 		}
