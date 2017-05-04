@@ -4,7 +4,7 @@
 *Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática
 *Manuel Madeira Amado - 2006131282
 *Xavier Silva - 2013153577
-*Versão 0.10
+*Versão 0.11
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -176,9 +176,11 @@ void printTree(node* current, int level, int valorS){
                             else{
                                 if(current->nodeType == ID_node){
             	                    if(strcmp(current->anot, "") == 0){
+                                        //printf("VAZIO");
                                         printf("Id(%s)\n",current->var);
                                     }else{
                                         printf("Id(%s) - %s\n", current->var, current->anot);
+                                        //printf("ANOTADO");
                                     }
                                 }
 /*--OTHER_node----------------------------------------------------------------*/

@@ -18,4 +18,8 @@ class declamacoes {
 
 	public static int desassosego;
 
+	public static int lusiada(){
+		int monstrengo;
+	}
+
 }

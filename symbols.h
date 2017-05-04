@@ -4,7 +4,7 @@
 * Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática           *
 * Manuel Madeira Amado - 2006131282                                                 *
 * Xavier Silva - 2013153577                                                         *
-* Versão 0.1                                                                        *
+* Versão 0.2                                                                        *
 ************************************************************************************/
 
 #ifndef SYMBOLS_H_INCLUDED
@@ -25,6 +25,7 @@ typedef struct symbol
     long long int coluna;
     bool checkSem;
     int numParam;
+    int decl;
 } symbol;
 
 typedef struct table

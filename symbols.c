@@ -4,7 +4,7 @@
 * Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática           *
 * Manuel Madeira Amado - 2006131282                                                 *
 * Xavier Silva - 2013153577                                                         *
-* Versão 0.11                                                                     *
+* Versão 0.12                                                                     *
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -19,6 +19,14 @@
 
 int numFunc = 0;
 char actualMethod[256];
+
+
+/*******************************************************************************
+* Opções de DEBUG:                                                             *
+* 1 - Imprime o id encontrado e a tabela atual onde vai pesquisar              *
+*******************************************************************************/
+int DEBUGS = 0;
+
 
 /*******************************************************************************
 * Cria a tabela de símbolos                                                    *
@@ -56,6 +64,7 @@ symbol* createSymbol(char* name, char* paramTypes ,char* type, param_type param,
     sym->checkSem = False;
     sym->isFunction = isFunction;
     sym->numParam = numParam;
+    sym->decl = 0;
     return sym;
 }
 
@@ -395,9 +404,10 @@ int lengthEscape(char* string){
 * Cria Árvore Anotada RECURSIVAMENTE                                           *
 *******************************************************************************/
 void TreeAnt(node* current, int level, table* tabela, table* atual){
-	int i;
-    //int j, k;
-    //int isGlobal=0;
+	int i = 0;
+    int j = 0;
+    //int k;
+    int isGlobal=0;
 
     //table* auxTable2 = tabela;
     //table* auxTable3 = tabela;
@@ -406,11 +416,47 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
 	if(current == NULL){
 		return;
 	}
-
+/*..Início de sub-árvore de Método.............................................*/
+    if(strcmp(current->nodeTypeName, "MethodDecl") == 0){
+        atual = tabela;
+        while(strcmp(cutType(atual->name), current->children[0]->children[1]->var) != 0){
+    		atual = atual->next;
+    	}
+    }
+/*..Activa uma variável após a sua declaração..................................*/
+    if( strcmp(current->nodeTypeName, "VarDecl") == 0 ||
+        strcmp(current->nodeTypeName, "ParamDecl") == 0){
+        for(i=0; i<atual->numSymbols; i++){
+            if(strcmp(current->children[1]->var, atual->symbols[i]->name) == 0){
+                atual->symbols[i]->decl = 1;
+            }
+        }
+    }
+    //printf("Global:%s Atual:%s\n", tabela->name, atual->name);
 /*--Chamada Recursiva---------------------------------------------------------*/
 	for(i=0; i<current->numChildren; i++){
         TreeAnt(current->children[i], level+1,tabela,atual);
     }
+
+/*--ID_node--Sem Olhar a VarDecl-----------------------------------------------*/
+        if(current->nodeType == ID_node){
+            isGlobal=0; //flag de entrada numa tabela
+            for(j=0;j<atual->numSymbols;j++){
+                if(strcmp(current->var,atual->symbols[j]->name)==0 && atual->symbols[j]->decl == 1){
+                    strcpy(current->anot,atual->symbols[j]->type);
+                    //strcpy(current->anot,"test");//aqui está a falha! Não sei porquê
+                    isGlobal=1;
+                }
+            }
+            if(isGlobal == 0){
+                for(j=0;j<tabela->numSymbols;j++){
+                    if(strcmp(current->var,tabela->symbols[j]->name)==0){
+                        strcpy(current->anot,tabela->symbols[j]->type);
+                        isGlobal=1;
+                    }
+                }
+            }
+        }
 
  /*--EXP_node------------------------------------------------------------------*/
  /*..Eq..Geq..Gt..Leq..Lt..Neq..And..Or........................................*/
@@ -474,169 +520,97 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                 }
             }
         }
-    }/*
-    else if(current->nodeType == ID_node){
-        if(strcmp(current->var, "args") == 0){
-            strcpy(current->anot,"String[]");
+    }
+/*--DECLIT_node---------------------------------------------------------------*/
+    else{
+        if(current->nodeType == DECLIT_node){
+            if(strcmp(current->nodeTypeName, "DecLit") == 0){
+                strcpy(current->anot,"int");
+            }
         }
+/*--STRLIT_node---------------------------------------------------------------*/
         else{
-            int localAndGlobal = 0;
-
-
-            if(strcmp(current->parent->nodeTypeName, "MethodHeader") == 0){
-                strcpy(actualMethod, current->var);
+            if(current->nodeType == STRLIT_node){
+                if(strcmp(current->nodeTypeName, "Strlit") == 0){
+                    strcpy(current->anot,"String");
+                }
             }
-
-            // Primeiro vai à tabela local
-            isGlobal=0;
-            atual = atual->next;
-            while(atual != NULL){
-                if(strcmp(cutType(atual->name), actualMethod) == 0){
-                    for(j=0;j<atual->numSymbols;j++){
-                        if(strcmp(current->var,atual->symbols[j]->name)==0){
-                            strcpy(current->anot,atual->symbols[j]->type);
-                            isGlobal=1;
-                            localAndGlobal++;
+/*--REALLIT_node--------------------------------------------------------------*/
+            else{
+                if(current->nodeType == REALLIT_node){
+                    if(strcmp(current->nodeTypeName, "RealLit") == 0){
+                        strcpy(current->anot,"double");
+                    }
+                }
+/*--BOOLLIT_node---------------------------------------------------------------*/
+                else{
+                    if(current->nodeType == BOOLLIT_node){
+                        if(strcmp(current->nodeTypeName, "BoolLit") == 0){
+                            strcpy(current->anot,"boolean");
+                        }
+                    }
+/*--OTHER_node----------------------------------------------------------------*/
+                    else{
+                        if(current->nodeType == OTHER_node){
+                            if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
+                                strcpy(current->anot,"int");
+                                strcpy(current->children[0]->anot, "String[]");
+                            }else{
+/*--Call----------------------------------------------------------------------*/
+                                if(strcmp(current->nodeTypeName, "Call") == 0){
+                                    strcpy(current->anot, "this");
+                                    int numParams = current->numChildren - 1;
+                                    int contaMetodo = 0;
+                                    int contaMetodoVazio = 0;
+                                    if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
+                                        if(tabela->type == classTable){     //verifica na GLOBAL Table
+                                            for(j=0;j<tabela->numSymbols;j++){
+                                                if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0 && tabela->symbols[j]->isFunction == 1){      //Coloca anotação no filho do Call
+                                                    if(countPointer(tabela->symbols[j]->paramTypes)+1 == numParams ){
+                                                        strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
+                                                        contaMetodo++;
+                                                        strcpy(current->anot, tabela->symbols[j]->type);
+                                                    }
+                                                    if(countPointer(tabela->symbols[j]->paramTypes) == 0 && numParams-1== -1){
+                                                        contaMetodoVazio++;
+                                                        strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
+                                                        strcpy(current->anot, tabela->symbols[j]->type);
+                                                    }
+                                              	}
+                                            }
+                                        }
+                                    }
+    // Quando o Call não tem anotação coloca UNDEF nele e no filho
+                                    if(strcmp(current->anot, "") == 0 || contaMetodo >= 2 || contaMetodoVazio >=2){
+                                        strcpy(current->anot, "undef");
+                                        strcpy(current->children[0]->anot,"undef");
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                atual = atual->next;
-            }
-
-            if(isGlobal == 0){
-                if(auxTable2->type == classTable){
-                    for(j=0;j<auxTable2->numSymbols;j++){
-                        if(strcmp(current->var,auxTable2->symbols[j]->name)==0){
-                            strcpy(current->anot,auxTable2->symbols[j]->type);
-                            isGlobal=1;
-                            localAndGlobal++;
-                        }
-                    }
-                }
             }
         }
     }
-    else if(current->nodeType == DECLIT_node){
-        if(strcmp(current->nodeTypeName, "DecLit") == 0){
-            strcpy(current->anot,"int");
-        }
-    }
-    else if(current->nodeType == STRLIT_node){
-        if(strcmp(current->nodeTypeName, "Strlit") == 0){
-            strcpy(current->anot,"String");
-        }
-    }
-    else if(current->nodeType == REALLIT_node){
-        if(strcmp(current->nodeTypeName, "RealLit") == 0){
-            strcpy(current->anot,"double");
-        }
-    }
-    else if(current->nodeType == BOOLLIT_node){
-        if(strcmp(current->nodeTypeName, "BoolLit") == 0){
-            strcpy(current->anot,"boolean");
-        }
-    }
-    else if(current->nodeType == OTHER_node){
 
-        if(strcmp(current->nodeTypeName, "ParseArgs") == 0){
-            strcpy(current->anot,"int");
-            strcpy(current->children[0]->anot, "String[]");
+    if( strcmp(current->nodeTypeName, "VarDecl") == 0 ||
+        strcmp(current->nodeTypeName, "ParamDecl") == 0 ||
+        strcmp(current->nodeTypeName, "FieldDecl") == 0 ||
+        strcmp(current->nodeTypeName, "MethodHeader") == 0)
+    {
+        if(strcmp(current->children[1]->nodeTypeName, "Id") == 0){
+            strcpy(current->children[1]->anot, "");
         }
-        else if(strcmp(current->nodeTypeName, "Call") == 0){
-        	strcpy(current->anot, "this");
-            int numParams = current->numChildren - 1;
-            int contaMetodo = 0;
-            int contaMetodoVazio = 0;
-
-
+    }else{
+        if(strcmp(current->nodeTypeName, "Assign") == 0){
+            strcpy(current->anot, "this");
 
             if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
-                if(tabela->type == classTable){     //verifica na GLOBAL Table
-                    for(j=0;j<tabela->numSymbols;j++){
-                        if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0 && tabela->symbols[j]->isFunction == 1){      //Coloca anotação no filho do Call
-                            if(countPointer(tabela->symbols[j]->paramTypes)+1 == numParams ){
-                                strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
-                                contaMetodo++;
-                                strcpy(current->anot, tabela->symbols[j]->type);
-                            }
-                            if(countPointer(tabela->symbols[j]->paramTypes) == 0 && numParams-1== -1){
-                                contaMetodoVazio++;
-                                strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
-                                strcpy(current->anot, tabela->symbols[j]->type);
-                            }
-                      	}
-                    }
-                }
-            }
-
-            // Quando o Call não tem anotação coloca UNDEF nele e no filho
-            if(strcmp(current->anot, "") == 0 || contaMetodo >= 2 || contaMetodoVazio >=2){
-                strcpy(current->anot, "undef");
-                strcpy(current->children[0]->anot,"undef");
-            }
-
-        }
-        ***************************************************
-        *Retira as anotações dos Id's que não queremos aqui*
-        ****************************************************
-        else if(strcmp(current->nodeTypeName, "VarDecl") == 0 || strcmp(current->nodeTypeName, "ParamDecl") == 0 ||
-                strcmp(current->nodeTypeName, "FieldDecl") == 0 || strcmp(current->nodeTypeName, "MethodHeader") == 0){
-            if(strcmp(current->children[1]->nodeTypeName, "Id") == 0){
-                strcpy(current->children[1]->anot, "");
+                strcpy(current->anot, current->children[0]->anot);
             }
         }
-        else{
-            if(strcmp(current->nodeTypeName, "Assign") == 0){
-            	strcpy(current->anot, "this");
-            	char nomeId[256];
-            	int assignPos = 0;
-            	int vardeclPos = 0;
-
-
-            	//Verifica as posições do assign e vardecl para ver se aparece antes ou depois
-            	//É escolhida a global ou local table conforme
-                if(strcmp(current->parent->nodeTypeName, "MethodBody") == 0){
-                	strcpy(nomeId, current->children[0]->var);
-                	for(j=0 ; j<current->parent->numChildren ; j++){
-                		if(strcmp(current->parent->children[j]->nodeTypeName, "VarDecl") == 0 && strcmp(nomeId, current->parent->children[j]->children[1]->var) == 0){
-                			vardeclPos = j;
-                		}
-                		if(strcmp(current->parent->children[j]->nodeTypeName, "Assign") == 0 && strcmp(current->parent->children[j]->anot, "this") == 0){
-                			assignPos = j;
-                		}
-                	}
-                }
-
-                if(assignPos < vardeclPos){
-                	//Global
-                	for(k=0;k<auxTable2->numSymbols;k++){
-                        if(strcmp(current->children[0]->var,auxTable2->symbols[k]->name)==0){
-                            strcpy(current->children[0]->anot,auxTable2->symbols[k]->type);
-                        }
-            		}
-                }
-                else{
-                	//local
-                	auxTable3 = auxTable3->next;
-		            while(auxTable3 != NULL){
-		                if(strcmp(cutType(auxTable3->name), actualMethod) == 0){
-		                    for(k=0;k<auxTable3->numSymbols;k++){
-		                        if(strcmp(current->children[0]->var,auxTable3->symbols[k]->name)==0){
-		                            strcpy(current->children[0]->anot,auxTable3->symbols[k]->type);
-		                        }
-		                    }
-		                }
-		                auxTable3 = auxTable3->next;
-		            }
-
-                }
-
-                if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
-                    strcpy(current->anot, current->children[0]->anot);
-                }
-            }
-        }
-    }*/
+    }
 }
 
 void checkGlobalTable(node* current, table* tab){

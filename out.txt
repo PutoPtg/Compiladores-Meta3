@@ -1,27 +1,165 @@
-===== Class gcd2 Symbol Table =====
-gcd		int
-main	(String[])	void
-gcd	(int,int)	int
+===== Class blondieMaria Symbol Table =====
+callme0	()	boolean
+callme1	()	int
+callme2	()	double
+callme3	()	void
+callme4	()	boolean
+callme5	()	int
+callme6	()	double
+callme7	()	void
+callme8	()	boolean
+callme9	()	int
+main	(String[])	int
+maria0	()	double
+maria1	()	void
+maria2	()	boolean
+maria3	()	int
+maria4	()	double
+maria5	()	void
+maria6	()	boolean
+maria7	()	int
+maria8	()	double
+maria9	()	void
+callme	(int,boolean)	boolean
+
+===== Method callme0() Symbol Table =====
+return		boolean
+
+===== Method callme1() Symbol Table =====
+return		int
+
+===== Method callme2() Symbol Table =====
+return		double
+
+===== Method callme3() Symbol Table =====
+return		void
+
+===== Method callme4() Symbol Table =====
+return		boolean
+
+===== Method callme5() Symbol Table =====
+return		int
+
+===== Method callme6() Symbol Table =====
+return		double
+
+===== Method callme7() Symbol Table =====
+return		void
+
+===== Method callme8() Symbol Table =====
+return		boolean
+
+===== Method callme9() Symbol Table =====
+return		int
 
 ===== Method main(String[]) Symbol Table =====
-return		void
-args		String[]	param
-a		int
-b		int
-
-===== Method gcd(int,int) Symbol Table =====
 return		int
-a		int	param
-b		int	param
+args		String[]	param
+resposta		boolean
+chamada		boolean
+rint		int
+rouble		double
+
+===== Method maria0() Symbol Table =====
+return		double
+
+===== Method maria1() Symbol Table =====
+return		void
+
+===== Method maria2() Symbol Table =====
+return		boolean
+
+===== Method maria3() Symbol Table =====
+return		int
+
+===== Method maria4() Symbol Table =====
+return		double
+
+===== Method maria5() Symbol Table =====
+return		void
+
+===== Method maria6() Symbol Table =====
+return		boolean
+
+===== Method maria7() Symbol Table =====
+return		int
+
+===== Method maria8() Symbol Table =====
+return		double
+
+===== Method maria9() Symbol Table =====
+return		void
+
+===== Method callme(int,boolean) Symbol Table =====
+return		boolean
+inteiro		int	param
+booleano		boolean	param
 
 Program
-..Id(gcd2)
-..FieldDecl
-....Int
-....Id(gcd)
+..Id(blondieMaria)
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(callme0)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Int
+......Id(callme1)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Double
+......Id(callme2)
+......MethodParams
+....MethodBody
 ..MethodDecl
 ....MethodHeader
 ......Void
+......Id(callme3)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(callme4)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Int
+......Id(callme5)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Double
+......Id(callme6)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Void
+......Id(callme7)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(callme8)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Int
+......Id(callme9)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Int
 ......Id(main)
 ......MethodParams
 ........ParamDecl
@@ -29,73 +167,169 @@ Program
 ..........Id(args)
 ....MethodBody
 ......VarDecl
-........Int
-........Id(a)
+........Bool
+........Id(resposta)
+......VarDecl
+........Bool
+........Id(chamada)
 ......VarDecl
 ........Int
-........Id(b)
-......If
-........Geq - boolean
-..........Length - int
-............Id(args)
-..........DecLit(2) - 
-........Block
-..........Assign
-............Id(a)
-............ParseArgs
-..............Id(args)
-..............DecLit(0) - 
-..........Assign
-............Id(b)
-............ParseArgs
-..............Id(args)
-..............DecLit(1) - 
-..........Assign
-............Id(gcd)
-............Call
-..............Id(gcd)
-..............Id(a)
-..............Id(b)
-..........Print
-............Id(gcd)
-........Print
-..........StrLit("Error: two parameters required.") - 
+........Id(rint)
+......VarDecl
+........Double
+........Id(rouble)
+......Assign - boolean
+........Id(resposta) - boolean
+........Call - boolean
+..........Id(callme) - (int,boolean)
+..........DecLit(3) - int
+..........Id(chamada) - boolean
+......Assign - boolean
+........Id(resposta) - boolean
+........Call - boolean
+..........Id(callme0) - ()
+......Assign - int
+........Id(rint) - int
+........Call - int
+..........Id(callme1) - ()
+......Assign - double
+........Id(rouble) - double
+........Call - double
+..........Id(callme2) - ()
+......Call - void
+........Id(callme3) - ()
+......Assign - boolean
+........Id(resposta) - boolean
+........Call - boolean
+..........Id(callme4) - ()
+......Assign - int
+........Id(rint) - int
+........Call - int
+..........Id(callme5) - ()
+......Assign - double
+........Id(rouble) - double
+........Call - double
+..........Id(callme6) - ()
+......Call - void
+........Id(callme7) - ()
+......Assign - boolean
+........Id(resposta) - boolean
+........Call - boolean
+..........Id(callme8) - ()
+......Assign - int
+........Id(rint) - int
+........Call - int
+..........Id(callme9) - ()
+......Assign - double
+........Id(rouble) - double
+........Call - double
+..........Id(maria0) - ()
+......Call - void
+........Id(maria1) - ()
+......Assign - boolean
+........Id(resposta) - boolean
+........Call - boolean
+..........Id(maria2) - ()
+......Assign - int
+........Id(rint) - int
+........Call - int
+..........Id(maria3) - ()
+......Assign - double
+........Id(rouble) - double
+........Call - double
+..........Id(maria4) - ()
+......Call - void
+........Id(maria5) - ()
+......Assign - boolean
+........Id(resposta) - boolean
+........Call - boolean
+..........Id(maria6) - ()
+......Assign - int
+........Id(rint) - int
+........Call - int
+..........Id(maria7) - ()
+......Assign - double
+........Id(rouble) - double
+........Call - double
+..........Id(maria8) - ()
+......Call - void
+........Id(maria9) - ()
+......Return
+........DecLit(1) - int
+..MethodDecl
+....MethodHeader
+......Double
+......Id(maria0)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Void
+......Id(maria1)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(maria2)
+......MethodParams
+....MethodBody
 ..MethodDecl
 ....MethodHeader
 ......Int
-......Id(gcd)
+......Id(maria3)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Double
+......Id(maria4)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Void
+......Id(maria5)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(maria6)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Int
+......Id(maria7)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Double
+......Id(maria8)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Void
+......Id(maria9)
+......MethodParams
+....MethodBody
+..MethodDecl
+....MethodHeader
+......Bool
+......Id(callme)
 ......MethodParams
 ........ParamDecl
 ..........Int
-..........Id(a)
+..........Id(inteiro)
 ........ParamDecl
-..........Int
-..........Id(b)
+..........Bool
+..........Id(booleano)
 ....MethodBody
-......If
-........Eq - boolean
-..........Id(a)
-..........DecLit(0) - 
-........Return
-..........Id(b)
-........Block
-..........While
-............Gt - boolean
-..............Id(b)
-..............DecLit(0) - 
-............If
-..............Gt - boolean
-................Id(a)
-................Id(b)
-..............Assign
-................Id(a)
-................Sub - 
-..................Id(a)
-..................Id(b)
-..............Assign
-................Id(b)
-................Sub - 
-..................Id(b)
-..................Id(a)
-..........Return
-............Id(a)
+......Assign
+........Id(global)
+........Id(inteiro) - int
+......Return
+........Id(booleano) - boolean
