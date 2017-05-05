@@ -1,78 +1,158 @@
-===== Class noreturn Symbol Table =====
-main	(String[])	int
-minhaCasinha	(int,int)	double
-minhaCasinha	(int,int)	boolean
-minhaCasinha	(int,int)	int
+===== Class mone Symbol Table =====
+f	()	void
+f	(int)	int
+f	(double)	double
+f	(boolean)	boolean
+f2	(boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean)	boolean
+main	()	void
 
-===== Method main(String[]) Symbol Table =====
+===== Method f() Symbol Table =====
+return		void
+
+===== Method f(int) Symbol Table =====
 return		int
-args		String[]	param
+a		int	param
 
-===== Method minhaCasinha(int,int) Symbol Table =====
+===== Method f(double) Symbol Table =====
 return		double
-mesa		int	param
-elevador		int	param
+b		double	param
 
-===== Method minhaCasinha(int,int) Symbol Table =====
+===== Method f(boolean) Symbol Table =====
 return		boolean
-mesa		int	param
-elevador		int	param
+c		boolean	param
 
-===== Method minhaCasinha(int,int) Symbol Table =====
-return		int
-mesa		int	param
-elevador		int	param
+===== Method f2(boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean,boolean) Symbol Table =====
+return		boolean
+c		boolean	param
+c1		boolean	param
+c2		boolean	param
+c3		boolean	param
+c4		boolean	param
+c5		boolean	param
+c6		boolean	param
+c7		boolean	param
+c8		boolean	param
+c9		boolean	param
+c0		boolean	param
+
+===== Method main() Symbol Table =====
+return		void
+z		int
+d		double
+n		int
 
 Program
-..Id(noreturn)
+..Id(mone)
+..MethodDecl
+....MethodHeader
+......Void
+......Id(f)
+......MethodParams
+....MethodBody
 ..MethodDecl
 ....MethodHeader
 ......Int
-......Id(main)
+......Id(f)
 ......MethodParams
 ........ParamDecl
-..........StringArray
-..........Id(args)
+..........Int
+..........Id(a)
 ....MethodBody
 ..MethodDecl
 ....MethodHeader
 ......Double
-......Id(minhaCasinha)
+......Id(f)
 ......MethodParams
 ........ParamDecl
-..........Int
-..........Id(mesa)
-........ParamDecl
-..........Int
-..........Id(elevador)
+..........Double
+..........Id(b)
 ....MethodBody
-......Return
-........Id(mesa) - int
 ..MethodDecl
 ....MethodHeader
 ......Bool
-......Id(minhaCasinha)
+......Id(f)
 ......MethodParams
 ........ParamDecl
-..........Int
-..........Id(mesa)
-........ParamDecl
-..........Int
-..........Id(elevador)
+..........Bool
+..........Id(c)
 ....MethodBody
-......Return
-........Id(elevador) - int
 ..MethodDecl
 ....MethodHeader
-......Int
-......Id(minhaCasinha)
+......Bool
+......Id(f2)
 ......MethodParams
 ........ParamDecl
-..........Int
-..........Id(mesa)
+..........Bool
+..........Id(c)
 ........ParamDecl
-..........Int
-..........Id(elevador)
+..........Bool
+..........Id(c1)
+........ParamDecl
+..........Bool
+..........Id(c2)
+........ParamDecl
+..........Bool
+..........Id(c3)
+........ParamDecl
+..........Bool
+..........Id(c4)
+........ParamDecl
+..........Bool
+..........Id(c5)
+........ParamDecl
+..........Bool
+..........Id(c6)
+........ParamDecl
+..........Bool
+..........Id(c7)
+........ParamDecl
+..........Bool
+..........Id(c8)
+........ParamDecl
+..........Bool
+..........Id(c9)
+........ParamDecl
+..........Bool
+..........Id(c0)
 ....MethodBody
+......Assign - boolean
+........Id(c) - boolean
+........BoolLit(true) - boolean
 ......Return
-........DecLit(1) - int
+........Id(c) - boolean
+..MethodDecl
+....MethodHeader
+......Void
+......Id(main)
+......MethodParams
+....MethodBody
+......VarDecl
+........Int
+........Id(z)
+......VarDecl
+........Double
+........Id(d)
+......Assign - double
+........Id(d) - double
+........Mod - double
+..........Id(d) - double
+..........Id(z) - int
+......Call - void
+........Id(f) - ()
+......Assign - int
+........Id(z) - int
+........Call - int
+..........Id(f) - (int)
+..........DecLit(0) - int
+......Call - double
+........Id(f) - (double)
+........RealLit(0.0) - double
+......Call - boolean
+........Id(f) - (boolean)
+........BoolLit(true) - boolean
+......VarDecl
+........Int
+........Id(n)
+......ParseArgs - int
+........Id(args) - String[]
+........Id(n) - int

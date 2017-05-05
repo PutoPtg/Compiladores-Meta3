@@ -37,6 +37,7 @@ typedef struct table
     struct table* next;
     struct table* prev;
     int numSymbols;
+    int declared;
     symbol** symbols;
 
 } table;

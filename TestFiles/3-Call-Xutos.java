@@ -9,7 +9,7 @@ class xutos {
 		vidaMalvada(mundoAoContrario);										//ambíguo multiplos
 		vidaMalvada(mundoAoContrario, contentores);							//chamado com o tipo errado
 		chuvaDissolvente();													//ambíguo, multiplo
-		vidaMalvada(vidaMalvada);											//ambíguo, 2 aceitam
+		vidaMalvada(vidaMalvada);											//ambíguo, 2 aceitam ..corect DEVE ACEITAR!
 		double vidaMalvada;
 		vidaMalvada(vidaMalvada);											//existe
 		return vidaMalvada();												//não existe

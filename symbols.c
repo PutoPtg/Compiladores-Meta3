@@ -18,9 +18,9 @@
 #define VAR3 (char*)calloc(1,sizeof(char))
 
 int numFunc = 0;
-char actualMethod[256];
-char tempo[256];
-char tempoUno[256];
+char actualMethod[512];
+char tempo[512];
+char tempoUno[512];
 char* tokenUno;
 
 
@@ -46,6 +46,7 @@ table* createTable(table_type type, char* name)
     tab->symbols = NULL;
     tab->check = False;
     tab->checkSem = False;
+    tab->declared = 0;
     return tab;
 }
 
@@ -208,7 +209,7 @@ table* initTables(node* root){
 
     if(strcmp(aux->nodeTypeName, "MethodDecl") == 0){
     	table* method;
-      	char value[256];
+      	char value[512];
       	int contaChildren = 0;
       	aux2 = aux->children[0]->children[1]; //guarda o ID do nome
 
@@ -259,7 +260,7 @@ table* initTables(node* root){
 
 
       	// Iniciar as tabelas de métodos
-      	char methodName[256];
+      	char methodName[512];
       	sprintf(methodName, "%s", aux2->var);
       	strcat(methodName, value);
 
@@ -315,7 +316,7 @@ table* initTables(node* root){
 
 /*Retira o tipo de um Id*/
 char* cutType(char* type){
-	char *newType = malloc(256*sizeof(char));
+	char *newType = malloc(512*sizeof(char));
 	int i;
 	for(i=0;i<strlen(type);i++){
 		if(type[i]=='('){
@@ -329,7 +330,7 @@ char* cutType(char* type){
 }
 /*Retira o tipo de um Id*/
 char* cutPar(char* type){
-	char *newType = malloc(256*sizeof(char));
+	char *newType = malloc(512*sizeof(char));
 	int i;
     int a;
     a = 0;
@@ -351,7 +352,7 @@ char* cutPar(char* type){
 }
 
 char* cutDerefPointer(char* type,int pos){
-	char *newType = malloc(256*sizeof(char));
+	char *newType = malloc(512*sizeof(char));
 	int i;
 	for(i=0;i<strlen(type)-pos;i++){
 			newType[i]=type[i];
@@ -372,7 +373,7 @@ int countPointer(char* type){
 }
 
 char* TransfPointer(char* type){
-	char *newType = malloc(256*sizeof(char));
+	char *newType = malloc(512*sizeof(char));
 	int i;
 	int isTransf = 0;
 	for(i=0;i<strlen(type);i++){
@@ -460,12 +461,27 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
 	if(current == NULL){
 		return;
 	}
+
+    if(strcmp(current->nodeTypeName, "Program") == 0){
+        tabela->declared = 1;
+    }
 /*..Início de sub-árvore de Método.............................................*/
     if(strcmp(current->nodeTypeName, "MethodDecl") == 0){
+        //printf("Método: %s\n", current->children[0]->children[1]->var);
         atual = tabela;
-        while(strcmp(cutType(atual->name), current->children[0]->children[1]->var) != 0){
-    		atual = atual->next;
-    	}
+        for(i=0; i<tabela->numSymbols; i++){
+            if(strcmp(cutType(atual->name), current->children[0]->children[1]->var) == 0 && atual->declared == 0){
+                atual->declared = 1;
+                i=tabela->numSymbols;
+            }else{
+                atual = atual->next;
+            }
+
+        }
+        //while((strcmp(cutType(atual->name), current->children[0]->children[1]->var) != 0 && atual->declared == 0) ){
+    	//	atual = atual->next;
+    	//}
+        //printf("Tabela atual: %s\n", atual->name);
     }
 /*..Activa uma variável após a sua declaração..................................*/
     if( strcmp(current->nodeTypeName, "VarDecl") == 0 ||
@@ -473,6 +489,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
         for(i=0; i<atual->numSymbols; i++){
             if(strcmp(current->children[1]->var, atual->symbols[i]->name) == 0){
                 atual->symbols[i]->decl = 1;
+                //printf("Activou %s act=%d\n", current->children[1]->var, atual->symbols[j]->decl);
             }
         }
     }
@@ -640,7 +657,9 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                                         contaMetodo = 0; //reset da variável
                                         for(i=0; i<tabela->numSymbols; i++){
                                             tokenUno = cutPar(tabela->symbols[i]->paramTypes);
-                                            if( (strcmp(tabela->symbols[i]->name, current->children[0]->var)==0) && (strcmp(tokenUno, current->children[1]->anot) == 0 || (strcmp(tokenUno, "double") == 0 && strcmp(current->children[1]->anot, "int") == 0)) && (tabela->symbols[i]->isFunction == 1))                              //é func e não var
+                                            if( (strcmp(tabela->symbols[i]->name, current->children[0]->var)==0) &&
+                                             (strcmp(tokenUno, current->children[1]->anot) == 0 ) &&
+                                             (tabela->symbols[i]->isFunction == 1))                              //é func e não var
                                             {
                                                 contaMetodo++;
                                                 if(contaMetodo == 1){                                         //anota o 1º que encontra
@@ -649,6 +668,23 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                                                 }
                                             }
                                         }
+                                        // caso não haja um exact match usa casos compatíveis -ints em doubles
+                                        if(contaMetodo == 0){
+                                            for(i=0; i<tabela->numSymbols; i++){
+                                                tokenUno = cutPar(tabela->symbols[i]->paramTypes);
+                                                if( (strcmp(tabela->symbols[i]->name, current->children[0]->var)==0) &&
+                                                (strcmp(tokenUno, "double") == 0 && strcmp(current->children[1]->anot, "int") == 0) && //Casos Compatíveis
+                                                (tabela->symbols[i]->isFunction == 1))                              //é func e não var
+                                                {
+                                                    contaMetodo++;
+                                                    if(contaMetodo == 1){                                         //anota o 1º que encontra
+                                                        strcpy(current->anot, tabela->symbols[i]->type);
+                                                        strcpy(current->children[0]->anot, tabela->symbols[i]->paramTypes);
+                                                    }
+                                                }
+                                            }
+                                        }
+
                                         //demasiados matches - ambíguo
                                         if(contaMetodo >= 2){
                                             strcpy(current->anot, "undef");
@@ -676,7 +712,7 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                                                         token = strtok(tempo, ",()");
 //--------------ciclo dos argumentos--------------------------------------------
                                                         for(j=1; j<=numParams; j++){
-                                                            if(strcmp(token, current->children[j]->anot)==0 ||(strcmp(token, "double")==0 && strcmp(current->children[j]->anot, "int")==0)){
+                                                            if(strcmp(token, current->children[j]->anot)==0){
                                                                 token = strtok(NULL, ",()");
                                                                 argCertos++;
                                                             }else{
@@ -695,6 +731,40 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                                                     }
                                                 }
 
+                                            }
+                                        }
+                                        if(contaMetodo == 0){
+                                            for(i=0; i<tabela->numSymbols; i++){
+                                                argCertos = 0;
+                                                if(strcmp(tabela->symbols[i]->name, current->children[0]->var)==0){ //mesmo nome
+                                                    if(tabela->symbols[i]->isFunction == 1){
+                                                        argumentos = ContaArgumento(tabela->symbols[i]->paramTypes, numParams);
+                                                        if(argumentos == 1){ //mesmo número de args
+                                                            char* token;
+                                                            strcpy(tempo, tabela->symbols[i]->paramTypes);
+                                                            token = strtok(tempo, ",()");
+    //--------------ciclo dos argumentos--------------------------------------------
+                                                            for(j=1; j<=numParams; j++){
+                                                                if(strcmp(token, current->children[j]->anot)==0 ||(strcmp(token, "double")==0 && strcmp(current->children[j]->anot, "int")==0)){
+                                                                    token = strtok(NULL, ",()");
+                                                                    argCertos++;
+                                                                }else{
+                                                                    argCertos = 0;
+                                                                    j = numParams;
+                                                                }
+                                                            }
+                                                            if(argCertos == numParams){
+                                                                contaMetodo++;
+                                                                if(contaMetodo == 1){                                         //anota o 1º que encontra
+                                                                    strcpy(current->anot, tabela->symbols[i]->type);
+                                                                    strcpy(current->children[0]->anot, tabela->symbols[i]->paramTypes);
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                }
                                             }
                                         }
                                         //demasiados matches - ambíguo
@@ -716,7 +786,6 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
             }
         }
     }
-
     if( strcmp(current->nodeTypeName, "VarDecl") == 0 ||
         strcmp(current->nodeTypeName, "ParamDecl") == 0 ||
         strcmp(current->nodeTypeName, "FieldDecl") == 0 ||
