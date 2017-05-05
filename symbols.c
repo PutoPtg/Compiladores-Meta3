@@ -4,7 +4,7 @@
 * Cadeira de Compiladores - 2017 - Licenciatura em Engenharia Informática           *
 * Manuel Madeira Amado - 2006131282                                                 *
 * Xavier Silva - 2013153577                                                         *
-* Versão 0.12                                                                     *
+* Versão 0.13                                                                       *
 ************************************************************************************/
 
 #include <stdlib.h>
@@ -19,6 +19,9 @@
 
 int numFunc = 0;
 char actualMethod[256];
+char tempo[256];
+char tempoUno[256];
+char* tokenUno;
 
 
 /*******************************************************************************
@@ -324,6 +327,28 @@ char* cutType(char* type){
 	newType[i] = '\0';
 	return newType;
 }
+/*Retira o tipo de um Id*/
+char* cutPar(char* type){
+	char *newType = malloc(256*sizeof(char));
+	int i;
+    int a;
+    a = 0;
+	for(i=0;i<strlen(type);i++){
+        //printf("%s\n", newType);
+        if(type[i] != '('){
+            if(type[i] != ')'){
+                newType[a]=type[i];
+                a++;
+            }
+        }else{
+            if(type[i]=='\0'){
+                newType[a] = '\0';
+                break;
+            }
+        }
+	}
+	return newType;
+}
 
 char* cutDerefPointer(char* type,int pos){
 	char *newType = malloc(256*sizeof(char));
@@ -398,6 +423,25 @@ int lengthEscape(char* string){
 		return strlen(string)-contador-1;
 	else
 		return strlen(string)-1;
+}
+/********************************************************************************
+* DESCRIÇÃO: Conta o número de argumentos de uma dada string    				*
+* RECEBE: ponteiro para a string e int objectivo				            	*
+* DEVOLVE: 1 se confirma, 0 se não confirma										*
+*********************************************************************************/
+int ContaArgumento(char* str, int obj){
+    int comprimento, conta, i;
+    comprimento = strlen(str);
+    conta = 0;
+    for(i=0; i<=comprimento; i++){
+        if(str[i]==','){ //conta as virgulas
+            conta++;
+        }
+    }
+    if(conta+1 == obj){
+        return 1;
+    }
+    return 0;
 }
 
 /*******************************************************************************
@@ -561,32 +605,108 @@ void TreeAnt(node* current, int level, table* tabela, table* atual){
                             }else{
 /*--Call----------------------------------------------------------------------*/
                                 if(strcmp(current->nodeTypeName, "Call") == 0){
-                                    strcpy(current->anot, "");
-                                    int numParams = current->numChildren - 1;
-                                    int contaMetodo = 0;
-                                    int contaMetodoVazio = 0;
-                                    if(strcmp(current->children[0]->nodeTypeName, "Id") == 0){      //Verifica o primeiro filho do Call
-                                        if(tabela->type == classTable){     //verifica na GLOBAL Table
-                                            for(j=0;j<tabela->numSymbols;j++){
-                                                if(strcmp(current->children[0]->var,tabela->symbols[j]->name)==0 && tabela->symbols[j]->isFunction == 1){      //Coloca anotação no filho do Call
-                                                    if(countPointer(tabela->symbols[j]->paramTypes)+1 == numParams ){
-                                                        strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
-                                                        contaMetodo++;
-                                                        strcpy(current->anot, tabela->symbols[j]->type);
-                                                    }
-                                                    if(countPointer(tabela->symbols[j]->paramTypes) == 0 && numParams-1== -1){
-                                                        contaMetodoVazio++;
-                                                        strcpy(current->children[0]->anot,tabela->symbols[j]->paramTypes);
-                                                        strcpy(current->anot, tabela->symbols[j]->type);
-                                                    }
-                                              	}
+                                    strcpy(current->anot, ""); //coloca a anotação vazia
+                                    int numParams = current->numChildren - 1; //conta quantos parâmetros tem
+                                    int contaMetodo = 0; //conta o número de métodos iguais encontrados
+                                    int argumentos = 0;
+/*--Call Sem Parâmetros--------------------------------------------------------*/
+                                    if(numParams==0){
+                                        contaMetodo = 0; //reset da variável
+                                        for(i=0; i<tabela->numSymbols; i++){
+                                            if( strcmp(tabela->symbols[i]->name, current->children[0]->var)==0 && //mesmo nome
+                                                strcmp(tabela->symbols[i]->paramTypes, "()") == 0 &&                   //sem args
+                                                tabela->symbols[i]->isFunction == 1)                              //é func e não var
+                                            {
+                                                contaMetodo++;
+                                                if(contaMetodo == 1){                                         //anota o 1º que encontra
+                                                    strcpy(current->anot, tabela->symbols[i]->type);
+                                                    strcpy(current->children[0]->anot, tabela->symbols[i]->paramTypes);
+                                                }
                                             }
                                         }
+                                        //demasiados matches - ambíguo
+                                        if(contaMetodo >= 2){
+                                            strcpy(current->anot, "undef");
+                                            strcpy(current->children[0]->anot, "undef");
+                                        }
+                                        //não encontrado método com esse nome
+                                        if(contaMetodo == 0){
+                                            strcpy(current->anot, "undef");
+                                            strcpy(current->children[0]->anot, "undef");
+                                        }
                                     }
-    // Quando o Call não tem anotação coloca UNDEF nele e no filho
-                                    if(strcmp(current->anot, "") == 0 || contaMetodo >= 2 || contaMetodoVazio >=2){
-                                        strcpy(current->anot, "undef");
-                                        strcpy(current->children[0]->anot,"undef");
+/*--Call C/ 1 Parâmetro--------------------------------------------------------*/
+                                    if(numParams==1){
+                                        contaMetodo = 0; //reset da variável
+                                        for(i=0; i<tabela->numSymbols; i++){
+                                            tokenUno = cutPar(tabela->symbols[i]->paramTypes);
+                                            if( (strcmp(tabela->symbols[i]->name, current->children[0]->var)==0) && (strcmp(tokenUno, current->children[1]->anot) == 0 || (strcmp(tokenUno, "double") == 0 && strcmp(current->children[1]->anot, "int") == 0)) && (tabela->symbols[i]->isFunction == 1))                              //é func e não var
+                                            {
+                                                contaMetodo++;
+                                                if(contaMetodo == 1){                                         //anota o 1º que encontra
+                                                    strcpy(current->anot, tabela->symbols[i]->type);
+                                                    strcpy(current->children[0]->anot, tabela->symbols[i]->paramTypes);
+                                                }
+                                            }
+                                        }
+                                        //demasiados matches - ambíguo
+                                        if(contaMetodo >= 2){
+                                            strcpy(current->anot, "undef");
+                                            strcpy(current->children[0]->anot, "undef");
+                                        }
+                                        //não encontrado método com esse nome
+                                        if(contaMetodo == 0){
+                                            strcpy(current->anot, "undef");
+                                            strcpy(current->children[0]->anot, "undef");
+                                        }
+                                    }
+/*--Call COM 2 ou + Parâmetros--------------------------------------------------------*/
+                                    if(numParams>1){
+                                        int argCertos = 0;
+                                        contaMetodo = 0; //reset da variável
+                                        argumentos = 0;
+                                        for(i=0; i<tabela->numSymbols; i++){
+                                            argCertos = 0;
+                                            if(strcmp(tabela->symbols[i]->name, current->children[0]->var)==0){ //mesmo nome
+                                                if(tabela->symbols[i]->isFunction == 1){
+                                                    argumentos = ContaArgumento(tabela->symbols[i]->paramTypes, numParams);
+                                                    if(argumentos == 1){ //mesmo número de args
+                                                        char* token;
+                                                        strcpy(tempo, tabela->symbols[i]->paramTypes);
+                                                        token = strtok(tempo, ",()");
+//--------------ciclo dos argumentos--------------------------------------------
+                                                        for(j=1; j<=numParams; j++){
+                                                            if(strcmp(token, current->children[j]->anot)==0 ||(strcmp(token, "double")==0 && strcmp(current->children[j]->anot, "int")==0)){
+                                                                token = strtok(NULL, ",()");
+                                                                argCertos++;
+                                                            }else{
+                                                                argCertos = 0;
+                                                                j = numParams;
+                                                            }
+                                                        }
+                                                        if(argCertos == numParams){
+                                                            contaMetodo++;
+                                                            if(contaMetodo == 1){                                         //anota o 1º que encontra
+                                                                strcpy(current->anot, tabela->symbols[i]->type);
+                                                                strcpy(current->children[0]->anot, tabela->symbols[i]->paramTypes);
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                        //demasiados matches - ambíguo
+                                        if(contaMetodo >= 2){
+                                            strcpy(current->anot, "undef");
+                                            strcpy(current->children[0]->anot, "undef");
+                                        }
+                                        //não encontrado método com esse nome
+                                        if(contaMetodo == 0){
+                                            strcpy(current->anot, "undef");
+                                            strcpy(current->children[0]->anot, "undef");
+                                        }
                                     }
                                 }
                             }
