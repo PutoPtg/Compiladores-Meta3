@@ -276,24 +276,20 @@ table* initTables(node* root){
   	  	method->prev = current;
   	  	current = current->next;
 
-  	  	// Se o método for o MAIN colocar os args
-  	  	if(strcmp(methodName, "main(String[])") == 0){
-  	  		AddSymbol(method,createSymbol("args", "", "String[]", paramParam,-1,-1,0,0));
-  	  	}
-  	  	else{
+  	  	
   	  		for(j=0 ; j<aux3->numChildren ; j++){
   	  			aux4 = aux3->children[j];
   	  			if(strcmp(aux4->children[0]->nodeTypeName, "Bool") == 0){
                 AddSymbol(method,createSymbol(aux4->children[1]->var, "", "boolean", paramParam,-1,-1,0,0));
-            }
-            else if(strcmp(aux4->children[0]->nodeTypeName, "StringArray") == 0){
-                AddSymbol(method,createSymbol(aux4->children[1]->var, "", "String[]", paramParam,-1,-1,0,0));
-            }
-            else{
-                AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
-            }
+                }
+                else if(strcmp(aux4->children[0]->nodeTypeName, "StringArray") == 0){
+                    AddSymbol(method,createSymbol(aux4->children[1]->var, "", "String[]", paramParam,-1,-1,0,0));
+                }
+                else{
+                    AddSymbol(method,createSymbol(aux4->children[1]->var, "", toLower(aux4->children[0]->nodeTypeName), paramParam,-1,-1,0,0));
+                }
   	  		}
-  	  	}
+  	  	
 
   	  // Ciclo que percorre os filhos de methodBody e vê as VarDecl
     	for(k=0 ; k<aux5->numChildren ; k++){
